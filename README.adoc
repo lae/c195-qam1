@@ -1,0 +1,4 @@
+= C195 - Scheduling Application
+
+This is a JavaFX application developed for the performance assessment for C195
+- Software II at Western Governor's University.

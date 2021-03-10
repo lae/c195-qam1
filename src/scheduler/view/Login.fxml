@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.10-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.controller.LoginController">
+    <top>
+        <VBox alignment="CENTER" spacing="8.0" BorderPane.alignment="CENTER">
+            <Label fx:id="loginLabel" text="loginLabel" textAlignment="CENTER">
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Label>
+            <Label fx:id="loginMessage" minHeight="32.0" text="loginMessage" wrapText="true" />
+            <padding>
+                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+            </padding>
+        </VBox>
+    </top>
+    <center>
+        <GridPane hgap="8.0" vgap="16.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="16.0" left="16.0" right="16.0"/>
+            </padding>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES"/>
+                <ColumnConstraints hgrow="SOMETIMES"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES"/>
+                <RowConstraints vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <Label fx:id="usernameLabel" text="usernameLabel"/>
+            <TextField fx:id="usernameInput" onKeyReleased="#onKeyLogin" GridPane.columnIndex="1"/>
+            <Label fx:id="passwordLabel" text="passwordLabel" GridPane.rowIndex="1"/>
+            <PasswordField fx:id="passwordInput" onKeyReleased="#onKeyLogin" GridPane.columnIndex="1"
+                           GridPane.rowIndex="1"/>
+        </GridPane>
+    </center>
+    <bottom>
+        <VBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+            <ToolBar nodeOrientation="RIGHT_TO_LEFT">
+                <Button fx:id="quitButton" mnemonicParsing="false" onAction="#onActionQuit" text="quitButton"/>
+                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onActionLogin" text="loginButton"/>
+            </ToolBar>
+            <Separator />
+            <Label fx:id="locationLabel" text="locationLabel">
+            <padding>
+               <Insets bottom="4.0" right="8.0" top="2.0" />
+            </padding>
+            <VBox.margin>
+               <Insets />
+            </VBox.margin></Label>
+        </VBox>
+    </bottom>
+</BorderPane>
