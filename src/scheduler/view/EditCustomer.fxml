@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.10-internal"
+            fx:controller="scheduler.controller.EditCustomerController">
+    <padding>
+        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+    </padding>
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="32.0" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="16.0"/>
+            </BorderPane.margin>
+            <Label fx:id="labelViewTitle" text="Edit Customer">
+                <font>
+                    <Font name="System Bold" size="16.0"/>
+                </font>
+            </Label>
+        </HBox>
+    </top>
+    <center>
+        <GridPane hgap="8.0" vgap="8.0" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="112.0" prefWidth="112.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="224.0" prefWidth="224.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <BorderPane.margin>
+                <Insets left="16.0" right="16.0"/>
+            </BorderPane.margin>
+            <Label text="ID"/>
+            <Label text="Name" GridPane.rowIndex="1"/>
+            <Label text="Address" GridPane.rowIndex="2"/>
+            <Label text="Country" GridPane.rowIndex="3"/>
+            <Label text="State/Province" GridPane.rowIndex="4"/>
+            <Label text="Postal Code" GridPane.rowIndex="5"/>
+            <Label text="Phone Number" GridPane.rowIndex="6"/>
+            <TextField fx:id="inputId" disable="true" GridPane.columnIndex="1"/>
+            <TextField fx:id="inputName" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <TextField fx:id="inputAddress" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <ComboBox fx:id="inputCountry" prefWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="3" onAction="#onActionSelectCountry"/>
+            <ComboBox fx:id="inputDivision" prefWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <TextField fx:id="inputPostalCode" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+            <TextField fx:id="inputPhoneNumber" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+        </GridPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="16.0">
+            <Button mnemonicParsing="false" onAction="#onActionSaveCustomer" text="Save"/>
+            <Button mnemonicParsing="false" onAction="#onActionCancel" text="Cancel"/>
+            <BorderPane.margin>
+                <Insets right="48.0" top="16.0"/>
+            </BorderPane.margin>
+        </HBox>
+    </bottom>
+</BorderPane>

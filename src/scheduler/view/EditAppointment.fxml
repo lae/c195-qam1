@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.10-internal"
+            fx:controller="scheduler.controller.EditAppointmentController">
+    <padding>
+        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+    </padding>
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="32.0" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="16.0"/>
+            </BorderPane.margin>
+            <Label fx:id="labelViewTitle" text="Edit Appointment">
+                <font>
+                    <Font name="System Bold" size="16.0"/>
+                </font>
+            </Label>
+        </HBox>
+    </top>
+    <center>
+        <GridPane hgap="8.0" vgap="8.0" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="112.0" prefWidth="128.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="224.0" prefWidth="384.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="128.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <BorderPane.margin>
+                <Insets left="16.0" right="16.0"/>
+            </BorderPane.margin>
+            <Label text="ID"/>
+            <Label text="Title" GridPane.rowIndex="1"/>
+            <Label text="Date" GridPane.rowIndex="2"/>
+            <Label text="Start Time" GridPane.rowIndex="3"/>
+            <Label text="End Time" GridPane.rowIndex="4"/>
+            <Label text="Customer" GridPane.rowIndex="5"/>
+            <Label text="User" GridPane.rowIndex="6"/>
+            <Label text="Contact" GridPane.rowIndex="7"/>
+            <Label text="Location" GridPane.rowIndex="8"/>
+            <Label text="Type" GridPane.rowIndex="9"/>
+            <Label text="Description" GridPane.rowIndex="10"/>
+            <TextField fx:id="inputId" disable="true" GridPane.columnIndex="1"/>
+            <TextField fx:id="inputTitle" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <DatePicker fx:id="inputDate" prefWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <ComboBox fx:id="inputStart" prefWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <ComboBox fx:id="inputEnd" prefWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+            <ComboBox fx:id="inputCustomer" prefWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+            <ComboBox fx:id="inputUser" prefWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+            <ComboBox fx:id="inputContact" prefWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+            <TextField fx:id="inputLocation" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+            <TextField fx:id="inputType" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+            <TextArea fx:id="inputDescription" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+        </GridPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="16.0">
+            <Button mnemonicParsing="false" onAction="#onActionSaveAppointment" text="Save"/>
+            <Button mnemonicParsing="false" onAction="#onActionCancel" text="Cancel"/>
+            <BorderPane.margin>
+                <Insets right="48.0" top="16.0"/>
+            </BorderPane.margin>
+        </HBox>
+    </bottom>
+</BorderPane>
