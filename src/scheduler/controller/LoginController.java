@@ -11,10 +11,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import scheduler.dao.DAO;
+import scheduler.dao.UserDao;
+import scheduler.exceptions.AuthenticationException;
+import scheduler.exceptions.LookupException;
 import scheduler.exceptions.MissingFieldsException;
 import scheduler.model.User;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.time.ZoneId;
@@ -33,6 +36,8 @@ public class LoginController implements Initializable {
     @FXML
     private Button quitButton, loginButton;
 
+    private static DAO<User> userDao;
+
     /**
      * Initializes all of the labels in the login form with localized strings.
      */
@@ -48,11 +53,30 @@ public class LoginController implements Initializable {
         locationLabel.setText(MessageFormat.format(rb.getString("location"), zone));
     }
 
+    /**
+     * Validates a login attempt
+     * 
+     * @param username the login username provided by the end-user.
+     * @param password the login password provided by the end-user.
+     */
     private void attemptLogin(String username, String password) {
         try {
             User user = new User(username, password);
+            User userLookup = userDao.find(user);
+            if(userLookup.getUserID() == 0) {
+                throw new LookupException("User does not exist.");
+            }
+            else if (!user.getPassword().contentEquals(userLookup.getPassword())) {
+                throw new AuthenticationException("Credentials failed to verify.");
+            }
+            userDao.update(userLookup);
+            loginMessage.setText("Correct credentials.");
         } catch (MissingFieldsException e) {
             loginMessage.setText(rb.getString("login_failed"));
+        } catch (LookupException e) {
+            loginMessage.setText("Couldn't find user.");
+        } catch (AuthenticationException e) {
+            loginMessage.setText("Login credentials incorrect.");
         }
     }
 
@@ -85,7 +109,7 @@ public class LoginController implements Initializable {
     public void onKeyLogin(KeyEvent keyEvent) {
         KeyCode key = keyEvent.getCode();
         if (key == KeyCode.ENTER) {
-            loginMessage.setText("You clicked Enter!");
+            attemptLogin(usernameInput.getText(), passwordInput.getText());
         }
     }
 
@@ -98,5 +122,6 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         localizeLabels();
+        userDao = new UserDao();
     }
 }

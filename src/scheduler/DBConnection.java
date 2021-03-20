@@ -12,7 +12,10 @@ import java.util.Properties;
 public class DBConnection {
     private static Connection conn = null;
 
-    public static Connection open() {
+    /**
+     * Initializes a network connection to an SQL database.
+     */
+    public static void open() {
         DataSource ds = getMySQLDataSource();
 
         try {
@@ -21,10 +24,11 @@ public class DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return conn;
     }
 
+    /**
+     * Closes the network connection to the SQL database.
+     */
     public static void close() {
         try {
             if (conn != null)
@@ -35,10 +39,20 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Provides an access handle to the SQL database connection.
+     *
+     * @return the database connection object to run SQL operations on.
+     */
     public static Connection get() {
         return conn;
     }
 
+    /**
+     * Reads database connection information from a configuration file.
+     *
+     * @return a MySQL data source to connect to.
+     */
     private static MysqlDataSource getMySQLDataSource() {
         Properties props = new Properties();
         FileInputStream fis;

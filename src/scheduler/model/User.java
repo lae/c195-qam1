@@ -2,7 +2,6 @@ package scheduler.model;
 
 import scheduler.exceptions.MissingFieldsException;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -13,8 +12,7 @@ import java.sql.Timestamp;
 public class User {
     private int userID;
     private String username, password, createdBy, lastUpdatedBy;
-    private Date createDate;
-    private Timestamp lastUpdate;
+    private Timestamp createDate, lastUpdate;
 
     /**
      * Constructor for use in a login form.
@@ -38,6 +36,33 @@ public class User {
         }
         this.setUsername(username);
         this.setPassword(password);
+    }
+
+    /**
+     * Constructor for fully defined User. Mainly used in database queries.
+     *
+     * @param userID User ID of the user.
+     * @param username the username associated with the user.
+     * @param password the plaintext password of the user.
+     * @param createdBy who the user was created by.
+     * @param lastUpdatedBy who the user was last updated by.
+     * @param createDate when the user was created.
+     * @param lastUpdate when the user was last updated.
+     */
+    public User(int userID, String username, String password, String createdBy, String lastUpdatedBy, Timestamp createDate, Timestamp lastUpdate) {
+        this.userID = userID;
+        this.username = username;
+        this.password = password;
+        this.createdBy = createdBy;
+        this.lastUpdatedBy = lastUpdatedBy;
+        this.createDate = createDate;
+        this.lastUpdate = lastUpdate;
+    }
+
+    /**
+     * a null user.
+     */
+    public User() {
     }
 
     /**
@@ -66,5 +91,12 @@ public class User {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the password of the User
+     */
+    public String getPassword() {
+        return password;
     }
 }
