@@ -1,5 +1,6 @@
 package scheduler.controller;
 
+import com.sun.javafx.css.StyleCacheEntry;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,16 +19,19 @@ import scheduler.exceptions.LookupException;
 import scheduler.exceptions.MissingFieldsException;
 import scheduler.model.User;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static scheduler.Main.loadView;
+
 public class LoginController implements Initializable {
     private static DAO<User> userDao;
-    Stage stage;
-    ResourceBundle rb = ResourceBundle.getBundle("i18n/Login", Locale.getDefault());
+    private Stage stage;
+    private ResourceBundle rb = ResourceBundle.getBundle("i18n/Login", Locale.getDefault());
     @FXML
     private Label loginLabel, loginMessage, usernameLabel, passwordLabel, locationLabel;
     @FXML
@@ -58,7 +62,7 @@ public class LoginController implements Initializable {
      * @param username the login username provided by the end-user.
      * @param password the login password provided by the end-user.
      */
-    private void attemptLogin(String username, String password) {
+    private boolean attemptLogin(String username, String password) {
         try {
             User user = new User(username, password);
             User userLookup = userDao.find(user);
@@ -67,8 +71,7 @@ public class LoginController implements Initializable {
             } else if (!user.getPassword().contentEquals(userLookup.getPassword())) {
                 throw new AuthenticationException("Credentials failed to verify.");
             }
-            userDao.update(userLookup);
-            loginMessage.setText("Correct credentials.");
+            return true;
         } catch (MissingFieldsException e) {
             loginMessage.setText(rb.getString("login_failed"));
         } catch (LookupException e) {
@@ -76,6 +79,7 @@ public class LoginController implements Initializable {
         } catch (AuthenticationException e) {
             loginMessage.setText("Login credentials incorrect.");
         }
+        return false;
     }
 
     /**
@@ -94,8 +98,11 @@ public class LoginController implements Initializable {
      * @param actionEvent an action a user performs.
      */
     @FXML
-    public void onActionLogin(ActionEvent actionEvent) {
-        attemptLogin(usernameInput.getText(), passwordInput.getText());
+    public void onActionLogin(ActionEvent actionEvent) throws IOException {
+        if (attemptLogin(usernameInput.getText(), passwordInput.getText())) {
+            stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            loadView(stage, "/scheduler/view/Dashboard.fxml");
+        }
     }
 
     /**
@@ -104,10 +111,13 @@ public class LoginController implements Initializable {
      * @param keyEvent a key
      */
     @FXML
-    public void onKeyLogin(KeyEvent keyEvent) {
+    public void onKeyLogin(KeyEvent keyEvent) throws IOException {
         KeyCode key = keyEvent.getCode();
         if (key == KeyCode.ENTER) {
-            attemptLogin(usernameInput.getText(), passwordInput.getText());
+            if (attemptLogin(usernameInput.getText(), passwordInput.getText())) {
+                stage = (Stage) ((TextField) keyEvent.getSource()).getScene().getWindow();
+                loadView(stage, "/scheduler/view/Dashboard.fxml");
+            }
         }
     }
 
