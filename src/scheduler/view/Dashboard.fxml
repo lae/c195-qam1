@@ -61,7 +61,38 @@
         </AnchorPane>
     </Tab>
     <Tab text="Customers">
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+        <AnchorPane minHeight="0.0" minWidth="0.0">
+            <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                  AnchorPane.topAnchor="0">
+                <padding>
+                    <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                </padding>
+                <TableView fx:id="customerTableView" VBox.vgrow="ALWAYS">
+                    <placeholder>
+                        <Label fx:id="customerTablePlaceholder"
+                               text="Click Add Customer to add a new customer."/>
+                    </placeholder>
+                    <columns>
+                        <TableColumn fx:id="customerIDCol" minWidth="32" text="ID"/>
+                        <TableColumn fx:id="customerNameCol" minWidth="256" text="Name"/>
+                        <TableColumn fx:id="customerAddressCol" minWidth="384" text="Address"/>
+                        <TableColumn fx:id="customerPhoneNumberCol" minWidth="128" text="Phone Number"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                </TableView>
+                <HBox alignment="CENTER_RIGHT" spacing="16.0">
+                    <VBox.margin>
+                        <Insets top="8.0"/>
+                    </VBox.margin>
+                    <Button mnemonicParsing="false" onAction="#onActionModifyCustomer" text="Modify Customer"/>
+                    <Button mnemonicParsing="false" onAction="#onActionDeleteCustomer" text="Delete Customer"/>
+                    <Separator HBox.hgrow="ALWAYS"/>
+                    <Button mnemonicParsing="false" onAction="#onActionNewCustomer" text="Add Customer"/>
+                </HBox>
+            </VBox>
+        </AnchorPane>
     </Tab>
     <Tab text="Reports">
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>

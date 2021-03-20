@@ -1,6 +1,5 @@
 package scheduler.controller;
 
-import com.sun.javafx.css.StyleCacheEntry;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

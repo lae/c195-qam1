@@ -4,9 +4,9 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import scheduler.model.Appointment;
+import scheduler.model.Customer;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,28 +15,62 @@ public class DashboardController implements Initializable {
     @FXML
     private ToggleButton allToggleButton, monthToggleButton, weekToggleButton;
     @FXML
-    private Label appointmentMessageLabel;
+    private Label appointmentMessageLabel, appointmentTablePlaceholder, customerTablePlaceholder;
     @FXML
     private ToggleGroup selectAppointmentFilter;
-
-    /**
-     * Exits the application.
-     *
-     * @param actionEvent an action a user performs.
-     */
     @FXML
-    public void onActionQuit(ActionEvent actionEvent) {
-        Platform.exit();
+    private TableView<Appointment> appointmentTableView;
+    @FXML
+    private TableColumn<Appointment, Integer> appointmentIDCol, appointmentCustomerIDCol;
+    @FXML
+    private TableColumn<Appointment, String> appointmentTitleCol, appointmentDescriptionCol, appointmentLocationCol;
+    //@FXML
+    //private TableColumn<Appointment, Contact>;
+    @FXML
+    private TableView<Customer> customerTableView;
+    @FXML
+    private TableColumn<Customer, Integer> customerIDCol;
+    @FXML
+    private TableColumn<Customer, String> customerNameCol, customerAddressCol, customerPhoneNumberCol;
+
+    @FXML
+    public void onActionModifyAppt(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void onActionDeleteAppt(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void onActionScheduleAppt(ActionEvent actionEvent) {
     }
 
     /**
-     * Attempts a login.
+     * Updates appointments list to filter appointments by selected filter.
      *
-     * @param actionEvent an action a user performs.
+     * @param actionEvent A user input event.
      */
     @FXML
-    public void onActionLogin(ActionEvent actionEvent) {
-        // not applicable
+    public void onActionChangeFilter(ActionEvent actionEvent) {
+        if (monthToggleButton.isSelected()) {
+            // select month
+        } else if (weekToggleButton.isSelected()) {
+            // select week
+        } else {
+            //select all
+        }
+    }
+
+    @FXML
+    public void onActionModifyCustomer(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void onActionDeleteCustomer(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void onActionNewCustomer(ActionEvent actionEvent) {
     }
 
     /**
@@ -48,29 +82,5 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // WIP
-    }
-
-    public void onActionModifyAppt(ActionEvent actionEvent) {
-    }
-
-    public void onActionDeleteAppt(ActionEvent actionEvent) {
-    }
-
-    public void onActionScheduleAppt(ActionEvent actionEvent) {
-    }
-
-    /**
-     * Updates appointments list to filter appointments by selected filter.
-     *
-     * @param actionEvent A user input event.
-     */
-    public void onActionChangeFilter(ActionEvent actionEvent) {
-        if (monthToggleButton.isSelected()) {
-            // select month
-        } else if (weekToggleButton.isSelected()) {
-            // select week
-        } else {
-            //select all
-        }
     }
 }
