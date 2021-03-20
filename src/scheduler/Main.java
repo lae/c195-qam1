@@ -51,15 +51,31 @@ public class Main extends Application {
     }
 
     /**
-     * Wrapper around Alert to fix sizing.
+     * Wrapper around Alert.showAndWait() to fix sizing issues.
      * On my Linux system alert dialogs do not show properly via normal usage, so this provides a quick fix.
-     * See https://github.com/javafxports/openjdk-jfx/issues/222
+     * See https://github.com/javafxports/openjdk-jfx/issues/222 and https://bugs.openjdk.java.net/browse/JDK-8246795
      *
      * @param alert The instantiated Alert object to apply changes on.
+     * @return a result object containing information about the user's actions.
      */
-    public static void fixAlertDisplay(Alert alert) {
+    public static Optional<ButtonType> displayAlert(Alert alert) {
         alert.setResizable(true);
-        Platform.runLater(() -> alert.setResizable(false));
+        // Forces window to float.
+        alert.initStyle(StageStyle.UTILITY);
+
+        Thread t = new Thread(() -> {
+            // I'm not spending any more time on dealing with this platform bug.
+            // This provides some time for the dialog to resize itself correctly, and then disable resizes
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                return;
+            }
+            Platform.runLater(() -> alert.setResizable(false));
+        });
+        t.start();
+
+        return alert.showAndWait();
     }
 
     /**
