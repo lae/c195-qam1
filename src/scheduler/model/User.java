@@ -99,4 +99,32 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    /**
+     * @return who the user was created by.
+     */
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    /**
+     * @param createdBy who the user was created by.
+     */
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    /**
+     * @return who the user was last updated by.
+     */
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    /**
+     * @param lastUpdatedBy who the user was last updated by.
+     */
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
 }

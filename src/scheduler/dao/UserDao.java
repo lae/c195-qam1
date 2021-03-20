@@ -9,6 +9,11 @@ import scheduler.util.TimeUtil;
 import java.sql.*;
 
 public class UserDao implements DAO<User> {
+    /**
+     * Fetches a list of all Users from the SQL database.
+     *
+     * @return an ObservableList populated with all Users.
+     */
     public ObservableList<User> listAll() {
         ObservableList<User> allUsers = FXCollections.observableArrayList();
         PreparedStatement ps;
@@ -39,6 +44,12 @@ public class UserDao implements DAO<User> {
         return allUsers;
     }
 
+    /**
+     * Look up a User from the SQL database.
+     *
+     * @param user a User object that includes a username that we can lookup
+     * @return a populated User object if it exists in the database, otherwise an empty User object.
+     */
     public User find(User user) {
         User userResult = new User();
         PreparedStatement ps;
@@ -69,6 +80,11 @@ public class UserDao implements DAO<User> {
         return userResult;
     }
 
+    /**
+     * Update a User's information.
+     *
+     * @param user the updated User object.
+     */
     public void update(User user) {
         PreparedStatement ps;
         String rawSQL = "update users set User_Name = ?, Password = ?, Last_Update = ? where User_ID = ?;";
@@ -87,9 +103,14 @@ public class UserDao implements DAO<User> {
         }
     }
 
+    /**
+     * Deletes a User from the SQL database.
+     *
+     * @param user the User object to delete.
+     */
     public void delete(User user) {
         PreparedStatement ps;
-        String rawSQL = "delete users where User_ID = ?;";
+        String rawSQL = "delete from users where User_ID = ?;";
 
         try {
             Connection c = DBConnection.get();
@@ -102,6 +123,11 @@ public class UserDao implements DAO<User> {
         }
     }
 
+    /**
+     * Inserts a new User into the SQL database.
+     *
+     * @param user the User object to insert.
+     */
     public void add(User user) {
         PreparedStatement ps;
         String rawSQL = "insert into users (User_Name, Password, Created_By, Last_Updated_By) values (?, ?, ?, ?)";
@@ -109,7 +135,10 @@ public class UserDao implements DAO<User> {
         try {
             Connection c = DBConnection.get();
             ps = c.prepareStatement(rawSQL);
-            ps.setInt(1, user.getUserID());
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getCreatedBy());
+            ps.setString(4, user.getLastUpdatedBy());
 
             int res = ps.executeUpdate();
         } catch (SQLException e) {

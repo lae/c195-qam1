@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
+    private static DAO<User> userDao;
     Stage stage;
     ResourceBundle rb = ResourceBundle.getBundle("i18n/Login", Locale.getDefault());
     @FXML
@@ -35,8 +36,6 @@ public class LoginController implements Initializable {
     private PasswordField passwordInput;
     @FXML
     private Button quitButton, loginButton;
-
-    private static DAO<User> userDao;
 
     /**
      * Initializes all of the labels in the login form with localized strings.
@@ -63,10 +62,9 @@ public class LoginController implements Initializable {
         try {
             User user = new User(username, password);
             User userLookup = userDao.find(user);
-            if(userLookup.getUserID() == 0) {
+            if (userLookup.getUserID() == 0) {
                 throw new LookupException("User does not exist.");
-            }
-            else if (!user.getPassword().contentEquals(userLookup.getPassword())) {
+            } else if (!user.getPassword().contentEquals(userLookup.getPassword())) {
                 throw new AuthenticationException("Credentials failed to verify.");
             }
             userDao.update(userLookup);
