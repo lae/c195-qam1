@@ -4,10 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import scheduler.DBConnection;
 import scheduler.model.User;
+import scheduler.util.TimeUtil;
 
 import java.sql.*;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 public class UserDao implements DAO<User> {
     public ObservableList<User> listAll() {
@@ -79,7 +78,7 @@ public class UserDao implements DAO<User> {
             ps = c.prepareStatement(rawSQL);
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
-            ps.setTimestamp(3, Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDateTime()));
+            ps.setTimestamp(3, Timestamp.valueOf(TimeUtil.utcNow()));
             ps.setInt(4, user.getUserID());
 
             int res = ps.executeUpdate();

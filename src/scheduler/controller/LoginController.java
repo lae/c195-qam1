@@ -55,7 +55,7 @@ public class LoginController implements Initializable {
 
     /**
      * Validates a login attempt
-     * 
+     *
      * @param username the login username provided by the end-user.
      * @param password the login password provided by the end-user.
      */
