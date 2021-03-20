@@ -23,9 +23,13 @@ public class User {
      */
     public User(String username, String password) throws MissingFieldsException {
         int empty = 1;
-        if(username.isEmpty()) { empty *= 2; }
-        if(password.isEmpty()) { empty *= 4; }
-        if(empty > 1) {
+        if (username.isEmpty()) {
+            empty *= 2;
+        }
+        if (password.isEmpty()) {
+            empty *= 4;
+        }
+        if (empty > 1) {
             if (empty == 2) {
                 throw new MissingFieldsException("Missing username field.");
             } else if (empty == 4) {
@@ -41,13 +45,13 @@ public class User {
     /**
      * Constructor for fully defined User. Mainly used in database queries.
      *
-     * @param userID User ID of the user.
-     * @param username the username associated with the user.
-     * @param password the plaintext password of the user.
-     * @param createdBy who the user was created by.
+     * @param userID        User ID of the user.
+     * @param username      the username associated with the user.
+     * @param password      the plaintext password of the user.
+     * @param createdBy     who the user was created by.
      * @param lastUpdatedBy who the user was last updated by.
-     * @param createDate when the user was created.
-     * @param lastUpdate when the user was last updated.
+     * @param createDate    when the user was created.
+     * @param lastUpdate    when the user was last updated.
      */
     public User(int userID, String username, String password, String createdBy, String lastUpdatedBy, Timestamp createDate, Timestamp lastUpdate) {
         this.userID = userID;
@@ -87,17 +91,17 @@ public class User {
     }
 
     /**
-     * @param password a password that the User uses to authenticate with
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
      * @return the password of the User
      */
     public String getPassword() {
         return password;
+    }
+
+    /**
+     * @param password a password that the User uses to authenticate with
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**

@@ -19,14 +19,14 @@ public class Customer {
      * @param divisionID    ID of the division the customer is in.
      * @param name          full name of the customer.
      * @param address       street address of the customer.
-     * @param postalCode   postal code of the customer.
+     * @param postalCode    postal code of the customer.
      * @param phone         phone number of the customer.
      * @param createdBy     who the customer was created by.
      * @param lastUpdatedBy who the customer was last updated by.
      * @param createDate    when the customer was created.
      * @param lastUpdate    when the customer was last updated.
      */
-    public Customer(int customerID, String name, String address, String postalCode, String phone,  Timestamp createDate,  String createdBy,Timestamp lastUpdate, String lastUpdatedBy, int divisionID) {
+    public Customer(int customerID, String name, String address, String postalCode, String phone, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int divisionID) {
         this.customerID = customerID;
         this.divisionID = divisionID;
         this.name = name;

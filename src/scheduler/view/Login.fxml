@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<BorderPane xmlns="http://javafx.com/javafx/11.0.10-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.controller.LoginController">
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.10-internal"
+            fx:controller="scheduler.controller.LoginController">
     <top>
         <VBox alignment="CENTER" spacing="8.0" BorderPane.alignment="CENTER">
             <Label fx:id="loginLabel" text="loginLabel" textAlignment="CENTER">
                 <font>
-                    <Font name="System Bold" size="24.0" />
+                    <Font name="System Bold" size="24.0"/>
                 </font>
             </Label>
-            <Label fx:id="loginMessage" minHeight="32.0" text="loginMessage" wrapText="true" />
+            <Label fx:id="loginMessage" minHeight="32.0" text="loginMessage" wrapText="true"/>
             <padding>
-                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
             </padding>
         </VBox>
     </top>
@@ -45,14 +45,15 @@
                 <Button fx:id="quitButton" mnemonicParsing="false" onAction="#onActionQuit" text="quitButton"/>
                 <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onActionLogin" text="loginButton"/>
             </ToolBar>
-            <Separator />
+            <Separator/>
             <Label fx:id="locationLabel" text="locationLabel">
-            <padding>
-               <Insets bottom="4.0" right="8.0" top="2.0" />
-            </padding>
-            <VBox.margin>
-               <Insets />
-            </VBox.margin></Label>
+                <padding>
+                    <Insets bottom="4.0" right="8.0" top="2.0"/>
+                </padding>
+                <VBox.margin>
+                    <Insets/>
+                </VBox.margin>
+            </Label>
         </VBox>
     </bottom>
 </BorderPane>
