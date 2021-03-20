@@ -14,6 +14,7 @@ public class UserDao implements DAO<User> {
      *
      * @return an ObservableList populated with all Users.
      */
+    @Override
     public ObservableList<User> listAll() {
         ObservableList<User> allUsers = FXCollections.observableArrayList();
         PreparedStatement ps;
@@ -50,6 +51,7 @@ public class UserDao implements DAO<User> {
      * @param user a User object that includes a username that we can lookup
      * @return a populated User object if it exists in the database, otherwise an empty User object.
      */
+    @Override
     public User find(User user) {
         User userResult = new User();
         PreparedStatement ps;
@@ -85,6 +87,7 @@ public class UserDao implements DAO<User> {
      *
      * @param user the updated User object.
      */
+    @Override
     public void update(User user) {
         PreparedStatement ps;
         String rawSQL = "update users set User_Name = ?, Password = ?, Last_Update = ? where User_ID = ?;";
@@ -95,7 +98,7 @@ public class UserDao implements DAO<User> {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setTimestamp(3, Timestamp.valueOf(TimeUtil.utcNow()));
-            ps.setInt(4, user.getUserID());
+            ps.setInt(4, user.getID());
 
             int res = ps.executeUpdate();
         } catch (SQLException e) {
@@ -108,6 +111,7 @@ public class UserDao implements DAO<User> {
      *
      * @param user the User object to delete.
      */
+    @Override
     public void delete(User user) {
         PreparedStatement ps;
         String rawSQL = "delete from users where User_ID = ?;";
@@ -115,7 +119,7 @@ public class UserDao implements DAO<User> {
         try {
             Connection c = DBConnection.get();
             ps = c.prepareStatement(rawSQL);
-            ps.setInt(1, user.getUserID());
+            ps.setInt(1, user.getID());
 
             int res = ps.executeUpdate();
         } catch (SQLException e) {
@@ -128,6 +132,7 @@ public class UserDao implements DAO<User> {
      *
      * @param user the User object to insert.
      */
+    @Override
     public void add(User user) {
         PreparedStatement ps;
         String rawSQL = "insert into users (User_Name, Password, Created_By, Last_Updated_By) values (?, ?, ?, ?)";

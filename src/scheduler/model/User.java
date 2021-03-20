@@ -68,7 +68,7 @@ public class User {
     /**
      * @return the user ID of the User
      */
-    public int getUserID() {
+    public int getID() {
         return userID;
     }
 

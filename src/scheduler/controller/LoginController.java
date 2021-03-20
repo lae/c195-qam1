@@ -62,7 +62,7 @@ public class LoginController implements Initializable {
         try {
             User user = new User(username, password);
             User userLookup = userDao.find(user);
-            if (userLookup.getUserID() == 0) {
+            if (userLookup.getID() == 0) {
                 throw new LookupException("User does not exist.");
             } else if (!user.getPassword().contentEquals(userLookup.getPassword())) {
                 throw new AuthenticationException("Credentials failed to verify.");
