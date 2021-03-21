@@ -2,7 +2,7 @@ package scheduler.dao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import scheduler.DBConnection;
+import scheduler.util.DBUtil;
 import scheduler.model.Country;
 
 import java.sql.Connection;
@@ -24,7 +24,7 @@ public class CountryDao implements DAO<Country> {
         String rawSQL = "select * from countries;";
 
         try {
-            Connection c = DBConnection.get();
+            Connection c = DBUtil.get();
             ps = c.prepareStatement(rawSQL);
             rs = ps.executeQuery();
 
@@ -56,7 +56,7 @@ public class CountryDao implements DAO<Country> {
         String rawSQL = "select * from countries where Country_ID = ?;";
 
         try {
-            Connection c = DBConnection.get();
+            Connection c = DBUtil.get();
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, country.getID());
 
@@ -90,7 +90,7 @@ public class CountryDao implements DAO<Country> {
         String rawSQL = "delete from countries where Division_ID = ?;";
 
         try {
-            Connection c = DBConnection.get();
+            Connection c = DBUtil.get();
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, country.getID());
 

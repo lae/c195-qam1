@@ -3,6 +3,7 @@ package scheduler;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import scheduler.util.DBUtil;
 import scheduler.util.FXUtil;
 
 public class Main extends Application {
@@ -13,9 +14,9 @@ public class Main extends Application {
      * @param args The command line arguments passed to the application.
      */
     public static void main(String[] args) {
-        DBConnection.open();
+        DBUtil.open();
         launch(args);
-        DBConnection.close();
+        DBUtil.close();
     }
 
     /**

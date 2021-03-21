@@ -2,7 +2,7 @@ package scheduler.dao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import scheduler.DBConnection;
+import scheduler.util.DBUtil;
 import scheduler.model.Contact;
 
 import java.sql.Connection;
@@ -24,7 +24,7 @@ public class ContactDao implements DAO<Contact> {
         String rawSQL = "select * from contacts;";
 
         try {
-            Connection c = DBConnection.get();
+            Connection c = DBUtil.get();
             ps = c.prepareStatement(rawSQL);
             rs = ps.executeQuery();
 
@@ -57,7 +57,7 @@ public class ContactDao implements DAO<Contact> {
         String rawSQL = "select * from contacts where Contact_ID = ?;";
 
         try {
-            Connection c = DBConnection.get();
+            Connection c = DBUtil.get();
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, contact.getID());
 
@@ -87,7 +87,7 @@ public class ContactDao implements DAO<Contact> {
         String rawSQL = "update contacts set Contact_Name = ?, Email = ? where Contact_ID = ?;";
 
         try {
-            Connection c = DBConnection.get();
+            Connection c = DBUtil.get();
             ps = c.prepareStatement(rawSQL);
             ps.setString(1, contact.getName());
             ps.setString(2, contact.getEmail());
@@ -110,7 +110,7 @@ public class ContactDao implements DAO<Contact> {
         String rawSQL = "delete from contacts where Contact_ID = ?;";
 
         try {
-            Connection c = DBConnection.get();
+            Connection c = DBUtil.get();
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, contact.getID());
 
@@ -131,7 +131,7 @@ public class ContactDao implements DAO<Contact> {
         String rawSQL = "insert into contacts (Contact_Name, Email) values (?, ?)";
 
         try {
-            Connection c = DBConnection.get();
+            Connection c = DBUtil.get();
             ps = c.prepareStatement(rawSQL);
             ps.setString(1, contact.getName());
             ps.setString(2, contact.getEmail());

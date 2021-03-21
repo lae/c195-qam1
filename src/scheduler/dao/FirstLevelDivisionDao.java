@@ -2,7 +2,7 @@ package scheduler.dao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import scheduler.DBConnection;
+import scheduler.util.DBUtil;
 import scheduler.model.FirstLevelDivision;
 
 import java.sql.Connection;
@@ -24,7 +24,7 @@ public class FirstLevelDivisionDao implements DAO<FirstLevelDivision> {
         String rawSQL = "select * from first_level_divisions;";
 
         try {
-            Connection c = DBConnection.get();
+            Connection c = DBUtil.get();
             ps = c.prepareStatement(rawSQL);
             rs = ps.executeQuery();
 
@@ -57,7 +57,7 @@ public class FirstLevelDivisionDao implements DAO<FirstLevelDivision> {
         String rawSQL = "select * from first_level_divisions where FirstLevelDivision_ID = ?;";
 
         try {
-            Connection c = DBConnection.get();
+            Connection c = DBUtil.get();
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, firstLevelDivision.getID());
 
@@ -87,7 +87,7 @@ public class FirstLevelDivisionDao implements DAO<FirstLevelDivision> {
         String rawSQL = "delete from first_level_divisions where Division_ID = ?;";
 
         try {
-            Connection c = DBConnection.get();
+            Connection c = DBUtil.get();
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, firstLevelDivision.getID());
 

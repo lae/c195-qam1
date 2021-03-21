@@ -1,4 +1,4 @@
-package scheduler;
+package scheduler.util;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DBConnection {
+public class DBUtil {
     private static Connection conn = null;
 
     /**
