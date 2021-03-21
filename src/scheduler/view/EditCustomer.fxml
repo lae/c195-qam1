@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
@@ -48,7 +48,8 @@
             <TextField fx:id="inputId" disable="true" GridPane.columnIndex="1"/>
             <TextField fx:id="inputName" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
             <TextField fx:id="inputAddress" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-            <ComboBox fx:id="inputCountry" prefWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="3" onAction="#onActionSelectCountry"/>
+            <ComboBox fx:id="inputCountry" prefWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                      onAction="#onActionSelectCountry"/>
             <ComboBox fx:id="inputDivision" prefWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
             <TextField fx:id="inputPostalCode" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
             <TextField fx:id="inputPhoneNumber" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
