@@ -10,7 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
+import javafx.scene.paint.Color;
 import scheduler.State;
 import scheduler.dao.DAO;
 import scheduler.dao.UserDao;
@@ -28,7 +28,6 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
     private static DAO<User> userDao;
-    private Stage stage;
     private final ResourceBundle rb = ResourceBundle.getBundle("i18n/Login", Locale.getDefault());
     @FXML
     private Label loginLabel, loginMessage, usernameLabel, passwordLabel, locationLabel;
@@ -49,13 +48,12 @@ public class LoginController implements Initializable {
         passwordLabel.setText(rb.getString("password"));
         loginButton.setText(rb.getString("login"));
         quitButton.setText(rb.getString("quit"));
-
         String zone = ZoneId.systemDefault().toString();
         locationLabel.setText(MessageFormat.format(rb.getString("location"), zone));
     }
 
     /**
-     * Validates a login attempt
+     * Validates a login attempt.
      *
      * @param username the login username provided by the end-user.
      * @param password the login password provided by the end-user.
@@ -69,14 +67,14 @@ public class LoginController implements Initializable {
             } else if (!user.getPassword().contentEquals(userLookup.getPassword())) {
                 throw new AuthenticationException("Credentials failed to verify.");
             }
-            State.login(userLookup.getUsername());
+            State.login(userLookup);
             return true;
         } catch (MissingFieldsException e) {
+            loginMessage.setText(rb.getString("login_blank"));
+            loginMessage.setTextFill(Color.RED);
+        } catch (LookupException | AuthenticationException e) {
             loginMessage.setText(rb.getString("login_failed"));
-        } catch (LookupException e) {
-            loginMessage.setText("Couldn't find user.");
-        } catch (AuthenticationException e) {
-            loginMessage.setText("Login credentials incorrect.");
+            loginMessage.setTextFill(Color.RED);
         }
         return false;
     }

@@ -1,6 +1,7 @@
 package scheduler;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import scheduler.model.User;
 import scheduler.util.DBUtil;
 
 import java.sql.Connection;
@@ -10,7 +11,7 @@ public class State {
     private static final String configFile = "config.properties";
     private static Connection dbConnection = null;
     private static boolean dbConnected, loggedIn;
-    private static String loggedInUser;
+    private static User loggedInUser;
 
     /**
      * Provides an access handle to the SQL database connection.
@@ -62,17 +63,17 @@ public class State {
     }
 
     /**
-     * @return the name of the currently logged in user.
+     * @return the User object of the currently logged in user.
      */
-    public static String getLoggedInUser() {
+    public static User getLoggedInUser() {
         return loggedInUser;
     }
 
     /**
-     * @param username the name of the user to login.
+     * @param user the User object of the user logging in.
      */
-    public static void login(String username) {
-        State.loggedInUser = username;
+    public static void login(User user) {
+        State.loggedInUser = user;
         State.loggedIn = true;
     }
 }

@@ -13,7 +13,7 @@
                     <Font name="System Bold" size="24.0"/>
                 </font>
             </Label>
-            <Label fx:id="loginMessage" minHeight="32.0" text="loginMessage" wrapText="true"/>
+            <Label fx:id="loginMessage" minHeight="32.0" textAlignment="CENTER" text="loginMessage" wrapText="true"/>
             <padding>
                 <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
             </padding>
