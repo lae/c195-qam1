@@ -1,9 +1,10 @@
 package scheduler;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import scheduler.util.DBUtil;
 import scheduler.util.FXUtil;
 
 public class Main extends Application {
@@ -14,9 +15,9 @@ public class Main extends Application {
      * @param args The command line arguments passed to the application.
      */
     public static void main(String[] args) {
-        DBUtil.open();
+        State.startDBConnection();
         launch(args);
-        DBUtil.close();
+        State.closeDBConnection();
     }
 
     /**
@@ -28,6 +29,13 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
+        if (!State.isDBConnected()) {
+            Alert alert = FXUtil.detailedAlert(Alert.AlertType.ERROR, "", "Cannot connect to the database.\n" +
+                            "Is the configuration correct?\n\nCheck the console for more information.");
+            FXUtil.displayAlert(alert);
+            Platform.exit();
+            return;
+        }
         // Bring up the login form as a utility window that'll float, first, and wait until it's closed.
         Stage loginStage = new Stage();
         loginStage.initStyle(StageStyle.UTILITY);

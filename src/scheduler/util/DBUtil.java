@@ -7,58 +7,52 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.Properties;
 
 public class DBUtil {
-    private static Connection conn = null;
-
     /**
      * Initializes a network connection to an SQL database.
+     *
+     * @param ds a data source object containing database connection information.
      */
-    public static void open() {
-        DataSource ds = getMySQLDataSource();
-
+    public static Optional<Connection> createConnection(DataSource ds) {
+        Connection c = null;
         try {
-            conn = ds.getConnection();
+            c = ds.getConnection();
             System.out.println("Database connection successful!");
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Failed to connect to database.");
         }
+        return Optional.ofNullable(c);
     }
 
     /**
-     * Closes the network connection to the SQL database.
+     * Logs out and closes out of a connection to an SQL database.
      */
-    public static void close() {
+    public static void closeConnection(Connection c) {
         try {
-            if (conn != null)
-                conn.close();
+            c.close();
             System.out.println("Database connection safely closed.");
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Failed to cleanly close database connection.");
         }
-    }
-
-    /**
-     * Provides an access handle to the SQL database connection.
-     *
-     * @return the database connection object to run SQL operations on.
-     */
-    public static Connection get() {
-        return conn;
     }
 
     /**
      * Reads database connection information from a configuration file.
      *
+     * @param rbLocation path to the ResourceBundle with database connection configuration.
      * @return a MySQL data source to connect to.
      */
-    private static MysqlDataSource getMySQLDataSource() {
+    public static MysqlDataSource loadConnectionConfig(String rbLocation) {
         Properties props = new Properties();
         FileInputStream fis;
         MysqlDataSource mysqlDS = null;
         try {
-            fis = new FileInputStream("config.properties");
+            fis = new FileInputStream(rbLocation);
             props.load(fis);
             mysqlDS = new MysqlDataSource();
             mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
@@ -66,6 +60,7 @@ public class DBUtil {
             mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Failed to load database connection information from file.");
         }
         return mysqlDS;
     }

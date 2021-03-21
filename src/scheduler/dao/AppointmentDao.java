@@ -2,7 +2,7 @@ package scheduler.dao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import scheduler.util.DBUtil;
+import scheduler.State;
 import scheduler.model.Appointment;
 import scheduler.util.TimeUtil;
 
@@ -22,7 +22,7 @@ public class AppointmentDao implements DAO<Appointment> {
         String rawSQL = "select * from appointments;";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             rs = ps.executeQuery();
 
@@ -66,7 +66,7 @@ public class AppointmentDao implements DAO<Appointment> {
         String rawSQL = "select * from appointments where Appointment_ID = ?;";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, appointment.getID());
 
@@ -109,7 +109,7 @@ public class AppointmentDao implements DAO<Appointment> {
                 "Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ?" +
                 "where Appointment_ID = ?;";
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setString(1, appointment.getTitle());
             ps.setString(2, appointment.getDescription());
@@ -141,7 +141,7 @@ public class AppointmentDao implements DAO<Appointment> {
         String rawSQL = "delete from appointments where Appointment_ID = ?;";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, appointment.getID());
 
@@ -164,7 +164,7 @@ public class AppointmentDao implements DAO<Appointment> {
                 "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setString(1, appointment.getTitle());
             ps.setString(2, appointment.getDescription());

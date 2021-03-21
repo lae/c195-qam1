@@ -2,7 +2,7 @@ package scheduler.dao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import scheduler.util.DBUtil;
+import scheduler.State;
 import scheduler.model.User;
 import scheduler.util.TimeUtil;
 
@@ -22,7 +22,7 @@ public class UserDao implements DAO<User> {
         String rawSQL = "select * from users;";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             rs = ps.executeQuery();
 
@@ -59,7 +59,7 @@ public class UserDao implements DAO<User> {
         String rawSQL = "select * from users where User_Name = ?;";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setString(1, user.getUsername());
 
@@ -93,7 +93,7 @@ public class UserDao implements DAO<User> {
         String rawSQL = "update users set User_Name = ?, Password = ?, Last_Update = ? where User_ID = ?;";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
@@ -117,7 +117,7 @@ public class UserDao implements DAO<User> {
         String rawSQL = "delete from users where User_ID = ?;";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, user.getID());
 
@@ -138,7 +138,7 @@ public class UserDao implements DAO<User> {
         String rawSQL = "insert into users (User_Name, Password, Created_By, Last_Updated_By) values (?, ?, ?, ?)";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());

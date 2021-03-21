@@ -2,7 +2,7 @@ package scheduler.dao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import scheduler.util.DBUtil;
+import scheduler.State;
 import scheduler.model.Customer;
 import scheduler.util.TimeUtil;
 
@@ -22,7 +22,7 @@ public class CustomerDao implements DAO<Customer> {
         String rawSQL = "select * from customers;";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             rs = ps.executeQuery();
 
@@ -62,7 +62,7 @@ public class CustomerDao implements DAO<Customer> {
         String rawSQL = "select * from customers where Customer_ID = ?;";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, customer.getID());
 
@@ -101,7 +101,7 @@ public class CustomerDao implements DAO<Customer> {
                 "Last_Update = ?, Last_Updated_By = ?" +
                 "where Customer_ID = ?;";
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setString(1, customer.getName());
             ps.setString(2, customer.getAddress());
@@ -129,7 +129,7 @@ public class CustomerDao implements DAO<Customer> {
         String rawSQL = "delete from customers where Customer_ID = ?;";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, customer.getID());
 
@@ -152,7 +152,7 @@ public class CustomerDao implements DAO<Customer> {
                 "values (?, ?, ?, ?, ?, ?, ?)";
 
         try {
-            Connection c = DBUtil.get();
+            Connection c = State.getDBConnection();
             ps = c.prepareStatement(rawSQL);
             ps.setString(1, customer.getName());
             ps.setString(2, customer.getAddress());
