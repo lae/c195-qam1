@@ -54,7 +54,7 @@ public class FirstLevelDivisionDao implements DAO<FirstLevelDivision> {
         FirstLevelDivision firstLevelDivisionResult = new FirstLevelDivision();
         PreparedStatement ps;
         ResultSet rs;
-        String rawSQL = "select * from first_level_divisions where FirstLevelDivision_ID = ?;";
+        String rawSQL = "select * from first_level_divisions where Division_ID = ?;";
 
         try {
             Connection c = State.getDBConnection();
