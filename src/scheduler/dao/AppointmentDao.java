@@ -34,11 +34,9 @@ public class AppointmentDao implements DAO<Appointment> {
                                 rs.getString("Description"),
                                 rs.getString("Location"),
                                 rs.getString("Type"),
-                                rs.getTimestamp("Start"),
-                                rs.getTimestamp("End"),
-                                rs.getTimestamp("Create_Date"),
+                                TimeUtil.tsToLocal(rs.getTimestamp("Start")),
+                                TimeUtil.tsToLocal(rs.getTimestamp("End")),
                                 rs.getString("Created_By") != null ? rs.getString("Created_By") : "",
-                                rs.getTimestamp("Last_Update"),
                                 rs.getString("Last_Updated_By") != null ? rs.getString("Last_Updated_By") : "",
                                 rs.getInt("Customer_ID"),
                                 rs.getInt("User_ID"),
@@ -80,11 +78,9 @@ public class AppointmentDao implements DAO<Appointment> {
                         rs.getString("Description"),
                         rs.getString("Location"),
                         rs.getString("Type"),
-                        rs.getTimestamp("Start"),
-                        rs.getTimestamp("End"),
-                        rs.getTimestamp("Create_Date"),
+                        TimeUtil.tsToLocal(rs.getTimestamp("Start")),
+                        TimeUtil.tsToLocal(rs.getTimestamp("End")),
                         rs.getString("Created_By") != null ? rs.getString("Created_By") : "",
-                        rs.getTimestamp("Last_Update"),
                         rs.getString("Last_Updated_By") != null ? rs.getString("Last_Updated_By") : "",
                         rs.getInt("Customer_ID"),
                         rs.getInt("User_ID"),
@@ -118,8 +114,8 @@ public class AppointmentDao implements DAO<Appointment> {
             ps.setString(2, appointment.getDescription());
             ps.setString(3, appointment.getLocation());
             ps.setString(4, appointment.getType());
-            ps.setTimestamp(5, appointment.getStart());
-            ps.setTimestamp(6, appointment.getEnd());
+            ps.setTimestamp(5, TimeUtil.localToTS(appointment.getStart()));
+            ps.setTimestamp(6, TimeUtil.localToTS(appointment.getEnd()));
             ps.setTimestamp(7, Timestamp.valueOf(TimeUtil.utcNow()));
             ps.setString(8, appointment.getLastUpdatedBy());
             ps.setInt(9, appointment.getCustomerID());
@@ -127,7 +123,7 @@ public class AppointmentDao implements DAO<Appointment> {
             ps.setInt(11, appointment.getContactID());
             ps.setInt(12, appointment.getID());
 
-            int res = ps.executeUpdate();
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -148,7 +144,7 @@ public class AppointmentDao implements DAO<Appointment> {
             ps = c.prepareStatement(rawSQL);
             ps.setInt(1, appointment.getID());
 
-            int res = ps.executeUpdate();
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -173,15 +169,15 @@ public class AppointmentDao implements DAO<Appointment> {
             ps.setString(2, appointment.getDescription());
             ps.setString(3, appointment.getLocation());
             ps.setString(4, appointment.getType());
-            ps.setTimestamp(5, appointment.getStart());
-            ps.setTimestamp(6, appointment.getEnd());
+            ps.setTimestamp(5, TimeUtil.localToTS(appointment.getStart()));
+            ps.setTimestamp(6, TimeUtil.localToTS(appointment.getEnd()));
             ps.setString(7, appointment.getCreatedBy());
             ps.setString(8, appointment.getLastUpdatedBy());
             ps.setInt(9, appointment.getCustomerID());
             ps.setInt(10, appointment.getUserID());
             ps.setInt(11, appointment.getContactID());
 
-            int res = ps.executeUpdate();
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

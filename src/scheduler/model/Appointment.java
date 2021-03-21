@@ -1,6 +1,6 @@
 package scheduler.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Customers
@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public class Appointment {
     private int appointmentID, customerID, userID, contactID;
     private String title, description, location, type, createdBy, lastUpdatedBy, contactName;
-    private Timestamp start, end, createDate, lastUpdate;
+    private LocalDateTime start, end;
 
     /**
      * Constructor for fully defined Appointment. Mainly used in database queries.
@@ -22,9 +22,7 @@ public class Appointment {
      * @param type          the category this appointment falls under.
      * @param start         the expected start time of the appointment.
      * @param end           the expected end time of the appointment.
-     * @param createDate    when the appointment was created.
      * @param createdBy     who the appointment was created by.
-     * @param lastUpdate    when the appointment was last updated.
      * @param lastUpdatedBy who the appointment was last updated by.
      * @param customerID    the ID of the Customer who is a party in the appointment.
      * @param userID        the ID of the User who is a party in the appointment.
@@ -32,8 +30,8 @@ public class Appointment {
      * @param contactName   the name of the Contact associated with the appointment.
      */
     public Appointment(int appointmentID, String title, String description, String location, String type,
-                       Timestamp start, Timestamp end, Timestamp createDate, String createdBy, Timestamp lastUpdate,
-                       String lastUpdatedBy, int customerID, int userID, int contactID, String contactName) {
+                       LocalDateTime start, LocalDateTime end, String createdBy, String lastUpdatedBy, int customerID,
+                       int userID, int contactID, String contactName) {
         this.appointmentID = appointmentID;
         this.title = title;
         this.description = description;
@@ -41,10 +39,8 @@ public class Appointment {
         this.type = type;
         this.start = start;
         this.end = end;
-        this.createDate = createDate;
         this.createdBy = createdBy;
         this.lastUpdatedBy = lastUpdatedBy;
-        this.lastUpdate = lastUpdate;
         this.customerID = customerID;
         this.userID = userID;
         this.contactID = contactID;
@@ -124,28 +120,28 @@ public class Appointment {
     /**
      * @return the expected start time of the appointment.
      */
-    public Timestamp getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
     /**
      * @param start the expected start time of the appointment.
      */
-    public void setStart(Timestamp start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
     /**
      * @return the expected end time of the appointment.
      */
-    public Timestamp getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
     /**
      * @param end the expected end time of the appointment.
      */
-    public void setEnd(Timestamp end) {
+    public void setEnd(LocalDateTime end) {
         this.end = end;
     }
 
