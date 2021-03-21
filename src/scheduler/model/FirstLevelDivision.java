@@ -30,6 +30,15 @@ public class FirstLevelDivision {
     }
 
     /**
+     * ID-based Constructor for a Division to use for database lookups from foreign keys.
+     *
+     * @param divisionID the ID of this division.
+     */
+    public FirstLevelDivision(int divisionID) {
+        this.divisionID = divisionID;
+    }
+
+    /**
      * @return the ID of this division.
      */
     public int getID() {

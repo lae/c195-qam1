@@ -28,6 +28,15 @@ public class Country {
     }
 
     /**
+     * ID-based Constructor for a Country to use for database lookups from foreign keys.
+     *
+     * @param countryID the ID of this country.
+     */
+    public Country(int countryID) {
+        this.countryID = countryID;
+    }
+
+    /**
      * @return the ID of this Country.
      */
     public int getID() {

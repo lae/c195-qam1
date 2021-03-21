@@ -12,9 +12,9 @@ import java.sql.SQLException;
 
 public class CountryDao implements DAO<Country> {
     /**
-     * Fetches a list of all Countrys from the SQL database.
+     * Fetches a list of all Countries from the SQL database.
      *
-     * @return an ObservableList populated with all Countrys.
+     * @return an ObservableList populated with all Countries.
      */
     @Override
     public ObservableList<Country> listAll() {
@@ -22,6 +22,36 @@ public class CountryDao implements DAO<Country> {
         PreparedStatement ps;
         ResultSet rs;
         String rawSQL = "select * from countries;";
+
+        try {
+            Connection c = State.getDBConnection();
+            ps = c.prepareStatement(rawSQL);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                allFLDs.add(
+                        new Country(
+                                rs.getInt("Country_ID"),
+                                rs.getString("Country")
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allFLDs;
+    }
+
+    /**
+     * Fetches a list of all Countries that have associated First Level Divisions from the SQL database.
+     *
+     * @return an ObservableList populated with all usable Countries.
+     */
+    public ObservableList<Country> listUsable() {
+        ObservableList<Country> allFLDs = FXCollections.observableArrayList();
+        PreparedStatement ps;
+        ResultSet rs;
+        String rawSQL = "select distinct countries.* from countries join first_level_divisions on countries.Country_ID = first_level_divisions.COUNTRY_ID;";
 
         try {
             Connection c = State.getDBConnection();

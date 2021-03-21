@@ -1,10 +1,15 @@
 package scheduler.controller;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import scheduler.dao.CountryDao;
+import scheduler.dao.CustomerDao;
+import scheduler.dao.DAO;
+import scheduler.dao.FirstLevelDivisionDao;
 import scheduler.model.Country;
 import scheduler.model.Customer;
 import scheduler.model.FirstLevelDivision;
@@ -14,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  * Controller for adding and modifying Customers.
@@ -22,8 +28,10 @@ import java.util.ResourceBundle;
  */
 public class EditCustomerController implements Initializable {
     private static final String newIdText = "Automatically Generated";
-    private Stage stage;
-    private int customerIndex = -1;
+    private static DAO<Customer> customerDAO;
+    private static CountryDao countryDAO;
+    private static DAO<FirstLevelDivision> firstLevelDivisionDAO;
+    private Customer customer;
     @FXML
     private Label labelViewTitle;
     @FXML
@@ -39,26 +47,53 @@ public class EditCustomerController implements Initializable {
     public void startAdd() {
         labelViewTitle.setText("Add Customer");
         inputId.setText(newIdText);
+        customer = new Customer();
+    }
+
+    public void updateFLDs(int countryID) {
+        inputDivision.setItems(
+                firstLevelDivisionDAO.listAll().stream()
+                        .filter(f -> f.getCountryID() == countryID)
+                        .collect(Collectors.toCollection(FXCollections::observableArrayList))
+        );
     }
 
     /**
      * Updates the view to that of an Edit Customer form.
      * This populates fields with information from an existing customer.
      *
-     * @param selectedIndex    the index of the Customer to edit.
      * @param selectedCustomer the Customer to edit.
      */
-    public void startEdit(int selectedIndex, Customer selectedCustomer) {
+    public void startEdit(Customer selectedCustomer) {
+        customer = selectedCustomer;
+
         labelViewTitle.setText("Modify Customer");
-        customerIndex = selectedCustomer.getID();
-        inputId.setText(String.valueOf(customerIndex));
-        inputName.setText(selectedCustomer.getName());
-        inputAddress.setText(String.valueOf(selectedCustomer.getAddress()));
-        inputPostalCode.setText(String.valueOf(selectedCustomer.getPostalCode()));
-        inputPhoneNumber.setText(String.valueOf(selectedCustomer.getPhone()));
+        inputId.setText(String.valueOf(customer.getID()));
+        inputName.setText(customer.getName());
+        inputAddress.setText(customer.getAddress());
+        inputPostalCode.setText(customer.getPostalCode());
+        inputPhoneNumber.setText(customer.getPhone());
+        FirstLevelDivision f = firstLevelDivisionDAO.find(new FirstLevelDivision(customer.getDivisionID()));
+        Country c = countryDAO.find(new Country(f.getCountryID()));
+        inputCountry.getSelectionModel().select(c);
+        updateFLDs(c.getID());
+        inputDivision.getSelectionModel().select(f);
     }
 
     public void onActionSaveCustomer(ActionEvent actionEvent) {
+        customer.setName(inputName.getText());
+        customer.setAddress(inputAddress.getText());
+        customer.setPostalCode(inputPostalCode.getText());
+        customer.setPhone(inputPhoneNumber.getText());
+        customer.setDivisionID(inputDivision.getSelectionModel().getSelectedItem().getID());
+
+        if (customer.getID() > 0) {
+            customerDAO.update(customer);
+        } else {
+            customerDAO.add(customer);
+        }
+
+        FXUtil.getStage(actionEvent).close();
     }
 
     /**
@@ -66,22 +101,27 @@ public class EditCustomerController implements Initializable {
      * This checks with the user whether or not they want to discard their changes and go back.
      *
      * @param actionEvent A user input event.
-     * @throws IOException さあ
      */
     @FXML
-    public void onActionCancel(ActionEvent actionEvent) throws IOException {
+    public void onActionCancel(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Your changes will be discarded. Is this OK?");
         Optional<ButtonType> result = FXUtil.displayAlert(alert);
         if (result.isEmpty() || result.get() != ButtonType.OK) {
             return;
         }
 
-        stage = FXUtil.getStage(actionEvent);
-        FXUtil.loadView(stage, "Dashboard.fxml");
+        FXUtil.getStage(actionEvent).close();
     }
 
+    /**
+     * Updates the list of states/provinces when user selects a country.
+     *
+     * @param actionEvent a user input event.
+     */
     @FXML
     public void onActionSelectCountry(ActionEvent actionEvent) {
+        Country selectedCountry = inputCountry.getSelectionModel().getSelectedItem();
+        updateFLDs(selectedCountry.getID());
     }
 
     /**
@@ -93,5 +133,32 @@ public class EditCustomerController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        inputCountry.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Country country) {
+                return country != null ? country.getName() : "";
+            }
+
+            @Override
+            public Country fromString(String s) {
+                return null;
+            }
+        });
+        inputDivision.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(FirstLevelDivision f) {
+                return f != null ? f.getDivision() : "";
+            }
+
+            @Override
+            public FirstLevelDivision fromString(String s) {
+                return null;
+            }
+        });
+        customerDAO = new CustomerDao();
+        countryDAO = new CountryDao();
+        firstLevelDivisionDAO = new FirstLevelDivisionDao();
+
+        inputCountry.setItems(countryDAO.listUsable());
     }
 }
