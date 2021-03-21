@@ -1,5 +1,6 @@
 package scheduler.controller;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,9 +18,12 @@ import scheduler.util.FXUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.WeekFields;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class DashboardController implements Initializable {
     private static DAO<Appointment> appointmentDAO;
@@ -72,18 +76,28 @@ public class DashboardController implements Initializable {
     }
 
     /**
-     * Updates appointments list to filter appointments by selected filter.
+     * Updates appointments list to filter appointments when one of the toggle buttons are pressed.
+     * Uses lambda expressions to filter appointments by current week or month.
      *
      * @param actionEvent A user input event.
      */
     @FXML
     public void onActionChangeFilter(ActionEvent actionEvent) {
         if (monthToggleButton.isSelected()) {
-            // select month
+            // Updates the appointment table with the current month's appointments.
+            appointmentTableView.setItems(appointmentDAO.listAll().stream()
+                    .filter(a -> a.getStart().getMonth() == LocalDate.now().getMonth())
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList)));
         } else if (weekToggleButton.isSelected()) {
-            // select week
+            // Updates the appointment table with the current week's appointments.
+            LocalDateTime weekStart = LocalDate.now().with(WeekFields.ISO.getFirstDayOfWeek()).atStartOfDay();
+            LocalDateTime weekEnd = weekStart.plusWeeks(1);
+            appointmentTableView.setItems(appointmentDAO.listAll().stream()
+                    .filter(a -> a.getStart().isAfter(weekStart) && a.getStart().isBefore(weekEnd))
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList)));
         } else {
-            //select all
+            // Updates the appointment table with all appointments.
+            refreshAppointmentTable();
         }
     }
 
