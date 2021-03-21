@@ -17,15 +17,13 @@ import scheduler.exceptions.AuthenticationException;
 import scheduler.exceptions.LookupException;
 import scheduler.exceptions.MissingFieldsException;
 import scheduler.model.User;
+import scheduler.util.FXUtil;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
-import static scheduler.Main.loadView;
 
 public class LoginController implements Initializable {
     private static DAO<User> userDao;
@@ -88,6 +86,7 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void onActionQuit(ActionEvent actionEvent) {
+        FXUtil.getStage(actionEvent).close();
         Platform.exit();
     }
 
@@ -97,10 +96,9 @@ public class LoginController implements Initializable {
      * @param actionEvent an action a user performs.
      */
     @FXML
-    public void onActionLogin(ActionEvent actionEvent) throws IOException {
+    public void onActionLogin(ActionEvent actionEvent) {
         if (attemptLogin(usernameInput.getText(), passwordInput.getText())) {
-            stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            loadView(stage, "/scheduler/view/Dashboard.fxml");
+            FXUtil.getStage(actionEvent).close();
         }
     }
 
@@ -110,12 +108,11 @@ public class LoginController implements Initializable {
      * @param keyEvent a key
      */
     @FXML
-    public void onKeyLogin(KeyEvent keyEvent) throws IOException {
+    public void onKeyLogin(KeyEvent keyEvent) {
         KeyCode key = keyEvent.getCode();
         if (key == KeyCode.ENTER) {
             if (attemptLogin(usernameInput.getText(), passwordInput.getText())) {
-                stage = (Stage) ((TextField) keyEvent.getSource()).getScene().getWindow();
-                loadView(stage, "/scheduler/view/Dashboard.fxml");
+                FXUtil.getStage(keyEvent).close();
             }
         }
     }
