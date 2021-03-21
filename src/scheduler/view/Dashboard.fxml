@@ -29,7 +29,7 @@
                                       toggleGroup="$selectAppointmentFilter" onAction="#onActionChangeFilter"/>
                     </HBox>
                 </HBox>
-                <TableView fx:id="appointmentTableView" VBox.vgrow="ALWAYS">
+                <TableView fx:id="appointmentTableView" VBox.vgrow="ALWAYS" onMouseClicked="#onClickModifyAppointment">
                     <placeholder>
                         <Label fx:id="appointmentTablePlaceholder"
                                text="Click Schedule New Appointment to schedule a new appointment."/>
@@ -68,7 +68,7 @@
                 <padding>
                     <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
                 </padding>
-                <TableView fx:id="customerTableView" VBox.vgrow="ALWAYS">
+                <TableView fx:id="customerTableView" VBox.vgrow="ALWAYS" onMouseClicked="#onClickModifyCustomer">
                     <placeholder>
                         <Label fx:id="customerTablePlaceholder"
                                text="Click Add Customer to add a new customer."/>

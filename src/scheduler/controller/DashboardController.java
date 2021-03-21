@@ -2,11 +2,13 @@ package scheduler.controller;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import scheduler.dao.AppointmentDao;
@@ -32,8 +34,6 @@ public class DashboardController implements Initializable {
     private ToggleButton monthToggleButton, weekToggleButton;
     @FXML
     private Label appointmentMessageLabel, appointmentTablePlaceholder, customerTablePlaceholder;
-    @FXML
-    private ToggleGroup selectAppointmentFilter;
     @FXML
     private TableView<Appointment> appointmentTableView;
     @FXML
@@ -63,17 +63,17 @@ public class DashboardController implements Initializable {
         customerTableView.setItems(customerDAO.listAll());
     }
 
-    @FXML
-    public void onActionModifyAppointment(ActionEvent actionEvent) throws IOException {
-        if (appointmentTableView.getSelectionModel().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "You must select an appointment to modify!");
-            FXUtil.displayAlert(alert);
-            return;
-        }
+    /**
+     * Creates a new stage/modal to edit an appointment.
+     *
+     * @param event A user input event.
+     * @throws IOException さあ
+     */
+    private void modifyAppointment(Event event) throws IOException {
         Appointment selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
         Stage editStage = new Stage();
         editStage.initModality(Modality.WINDOW_MODAL);
-        editStage.initOwner(FXUtil.getStage(actionEvent));
+        editStage.initOwner(FXUtil.getStage(event));
         editStage.setTitle("Scheduler::Update Appointment");
         FXMLLoader loader = FXUtil.loadView(editStage, "EditAppointment.fxml");
         EditAppointmentController editCtrl = loader.getController();
@@ -82,8 +82,40 @@ public class DashboardController implements Initializable {
         refreshAppointmentTable();
     }
 
+    /**
+     * Opens an Update Appointment window when button is clicked.
+     *
+     * @param actionEvent A user input event.
+     * @throws IOException さあ
+     */
     @FXML
-    public void onActionDeleteAppointment(ActionEvent actionEvent) {
+    public void onActionModifyAppointment(ActionEvent actionEvent) throws IOException {
+        if (appointmentTableView.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "You must select an appointment to modify!");
+            FXUtil.displayAlert(alert);
+            return;
+        }
+        modifyAppointment(actionEvent);
+    }
+
+    /**
+     * Opens an Update Appointment window when the TableView is double-clicked.
+     *
+     * @param mouseEvent mouse events performed by the user.
+     * @throws IOException さあ
+     */
+    @FXML
+    public void onClickModifyAppointment(MouseEvent mouseEvent) throws IOException {
+        if (mouseEvent.getClickCount() == 2 && !appointmentTableView.getSelectionModel().isEmpty()) {
+            modifyAppointment(mouseEvent);
+        }
+    }
+
+    /**
+     * Prompts user to delete an Appointment and deletes on confirmation.
+     */
+    @FXML
+    public void onActionDeleteAppointment() {
         if (appointmentTableView.getSelectionModel().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "You must select an appointment to delete!");
             FXUtil.displayAlert(alert);
@@ -121,11 +153,9 @@ public class DashboardController implements Initializable {
     /**
      * Updates appointments list to filter appointments when one of the toggle buttons are pressed.
      * Uses lambda expressions to filter appointments by current week or month.
-     *
-     * @param actionEvent A user input event.
      */
     @FXML
-    public void onActionChangeFilter(ActionEvent actionEvent) {
+    public void onActionChangeFilter() {
         if (monthToggleButton.isSelected()) {
             // Updates the appointment table with the current month's appointments.
             appointmentTableView.setItems(appointmentDAO.listAll().stream()
@@ -144,17 +174,17 @@ public class DashboardController implements Initializable {
         }
     }
 
-    @FXML
-    public void onActionModifyCustomer(ActionEvent actionEvent) throws IOException {
-        if (customerTableView.getSelectionModel().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "You must select a customer to modify!");
-            FXUtil.displayAlert(alert);
-            return;
-        }
+    /**
+     * Creates a new stage/modal to edit a customer.
+     *
+     * @param event A user input event.
+     * @throws IOException さあ
+     */
+    private void modifyCustomer(Event event) throws IOException {
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
         Stage editStage = new Stage();
         editStage.initModality(Modality.WINDOW_MODAL);
-        editStage.initOwner(FXUtil.getStage(actionEvent));
+        editStage.initOwner(FXUtil.getStage(event));
         editStage.setTitle("Scheduler::Update Customer");
         FXMLLoader loader = FXUtil.loadView(editStage, "EditCustomer.fxml");
         EditCustomerController editCtrl = loader.getController();
@@ -163,8 +193,40 @@ public class DashboardController implements Initializable {
         refreshCustomerTable();
     }
 
+    /**
+     * Opens an Update Customer window when button is clicked.
+     *
+     * @param actionEvent A user input event.
+     * @throws IOException さあ
+     */
     @FXML
-    public void onActionDeleteCustomer(ActionEvent actionEvent) {
+    public void onActionModifyCustomer(ActionEvent actionEvent) throws IOException {
+        if (customerTableView.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "You must select a customer to modify!");
+            FXUtil.displayAlert(alert);
+            return;
+        }
+        modifyCustomer(actionEvent);
+    }
+
+    /**
+     * Opens an Update Customer window when the TableView is double-clicked.
+     *
+     * @param mouseEvent mouse events performed by the user.
+     * @throws IOException さあ
+     */
+    @FXML
+    public void onClickModifyCustomer(MouseEvent mouseEvent) throws IOException {
+        if (mouseEvent.getClickCount() == 2 && !customerTableView.getSelectionModel().isEmpty()) {
+            modifyCustomer(mouseEvent);
+        }
+    }
+
+    /**
+     * Prompts user to delete a Customer and deletes on confirmation.
+     */
+    @FXML
+    public void onActionDeleteCustomer() {
         if (customerTableView.getSelectionModel().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "You must select a customer to delete!");
             FXUtil.displayAlert(alert);

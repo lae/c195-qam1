@@ -7,7 +7,10 @@ import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import scheduler.State;
 import scheduler.dao.*;
-import scheduler.model.*;
+import scheduler.model.Appointment;
+import scheduler.model.Contact;
+import scheduler.model.Customer;
+import scheduler.model.User;
 import scheduler.util.FXUtil;
 
 import java.net.URL;
