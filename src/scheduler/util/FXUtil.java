@@ -46,6 +46,10 @@ public class FXUtil {
      * Wrapper around Alert.showAndWait() to fix sizing issues.
      * On my Linux system alert dialogs do not show properly via normal usage, so this provides a quick fix.
      * See https://github.com/javafxports/openjdk-jfx/issues/222 and https://bugs.openjdk.java.net/browse/JDK-8246795
+     * <p>
+     * This function makes use of a lambda expression to execute a couple of statements inside of a separate thread from
+     * the JavaFX application's thread so that time is given for the alert window to resize itself before making the
+     * window not resizeable via mouse. This is needed to get around buggy behaviour in JavaFX under tiling WMs.
      *
      * @param alert The instantiated Alert object to apply changes on.
      * @return a result object containing information about the user's actions.

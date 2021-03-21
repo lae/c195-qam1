@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import scheduler.State;
 import scheduler.dao.DAO;
 import scheduler.dao.UserDao;
 import scheduler.exceptions.AuthenticationException;
@@ -28,7 +29,7 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable {
     private static DAO<User> userDao;
     private Stage stage;
-    private ResourceBundle rb = ResourceBundle.getBundle("i18n/Login", Locale.getDefault());
+    private final ResourceBundle rb = ResourceBundle.getBundle("i18n/Login", Locale.getDefault());
     @FXML
     private Label loginLabel, loginMessage, usernameLabel, passwordLabel, locationLabel;
     @FXML
@@ -68,6 +69,7 @@ public class LoginController implements Initializable {
             } else if (!user.getPassword().contentEquals(userLookup.getPassword())) {
                 throw new AuthenticationException("Credentials failed to verify.");
             }
+            State.login(userLookup.getUsername());
             return true;
         } catch (MissingFieldsException e) {
             loginMessage.setText(rb.getString("login_failed"));

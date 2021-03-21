@@ -9,7 +9,8 @@ import java.util.Optional;
 public class State {
     private static final String configFile = "config.properties";
     private static Connection dbConnection = null;
-    private static boolean dbConnected;
+    private static boolean dbConnected, loggedIn;
+    private static String loggedInUser;
 
     /**
      * Provides an access handle to the SQL database connection.
@@ -51,5 +52,27 @@ public class State {
      */
     public static boolean isDBConnected() {
         return dbConnected;
+    }
+
+    /**
+     * @return whether or not a valid user is logged in.
+     */
+    public static boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    /**
+     * @return the name of the currently logged in user.
+     */
+    public static String getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    /**
+     * @param username the name of the user to login.
+     */
+    public static void login(String username) {
+        State.loggedInUser = username;
+        State.loggedIn = true;
     }
 }

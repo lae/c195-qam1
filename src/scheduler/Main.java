@@ -31,7 +31,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         if (!State.isDBConnected()) {
             Alert alert = FXUtil.detailedAlert(Alert.AlertType.ERROR, "", "Cannot connect to the database.\n" +
-                            "Is the configuration correct?\n\nCheck the console for more information.");
+                    "Is the configuration correct?\n\nCheck the console for more information.");
             FXUtil.displayAlert(alert);
             Platform.exit();
             return;
@@ -42,6 +42,13 @@ public class Main extends Application {
         FXUtil.loadView(loginStage, "Login.fxml");
         loginStage.setTitle("Scheduler Login");
         loginStage.showAndWait();
+
+        // If the login window is closed and we're not logged in, exit the application.
+        if (!State.isLoggedIn()) {
+            System.out.println("Detected close without valid login. Exiting.");
+            Platform.exit();
+            return;
+        }
 
         // If login was successful, initialize the primary dashboard window.
         FXUtil.loadView(primaryStage, "Dashboard.fxml");
