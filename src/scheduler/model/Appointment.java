@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  */
 public class Appointment {
     private int appointmentID, customerID, userID, contactID;
-    private String title, description, location, type, createdBy, lastUpdatedBy;
+    private String title, description, location, type, createdBy, lastUpdatedBy, contactName;
     private Timestamp start, end, createDate, lastUpdate;
 
     /**
@@ -29,22 +29,26 @@ public class Appointment {
      * @param customerID    the ID of the Customer who is a party in the appointment.
      * @param userID        the ID of the User who is a party in the appointment.
      * @param contactID     the ID of the Contact associated with the appointment.
+     * @param contactName   the name of the Contact associated with the appointment.
      */
-    public Appointment(int appointmentID, String title, String description, String location, String type, Timestamp start, Timestamp end, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int customerID, int userID, int contactID) {
+    public Appointment(int appointmentID, String title, String description, String location, String type,
+                       Timestamp start, Timestamp end, Timestamp createDate, String createdBy, Timestamp lastUpdate,
+                       String lastUpdatedBy, int customerID, int userID, int contactID, String contactName) {
         this.appointmentID = appointmentID;
-        this.customerID = customerID;
-        this.userID = userID;
-        this.contactID = contactID;
         this.title = title;
         this.description = description;
         this.location = location;
         this.type = type;
-        this.createdBy = createdBy;
-        this.lastUpdatedBy = lastUpdatedBy;
         this.start = start;
         this.end = end;
         this.createDate = createDate;
+        this.createdBy = createdBy;
+        this.lastUpdatedBy = lastUpdatedBy;
         this.lastUpdate = lastUpdate;
+        this.customerID = customerID;
+        this.userID = userID;
+        this.contactID = contactID;
+        this.contactName = contactName;
     }
 
     /**
@@ -213,5 +217,12 @@ public class Appointment {
      */
     public void setContactID(int contactID) {
         this.contactID = contactID;
+    }
+
+    /**
+     * @return the name of the Contact associated with the appointment.
+     */
+    public String getContactName() {
+        return contactName;
     }
 }

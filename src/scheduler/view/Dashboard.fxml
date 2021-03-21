@@ -40,6 +40,7 @@
                         <TableColumn fx:id="appointmentDescriptionCol" minWidth="128" text="Description"/>
                         <TableColumn fx:id="appointmentLocationCol" minWidth="64" text="Location"/>
                         <TableColumn fx:id="appointmentContactCol" minWidth="64" text="Contact"/>
+                        <TableColumn fx:id="appointmentTypeCol" minWidth="64" text="Type"/>
                         <TableColumn fx:id="appointmentStartCol" minWidth="128" text="Start Time"/>
                         <TableColumn fx:id="appointmentEndCol" minWidth="128" text="End Time"/>
                         <TableColumn fx:id="appointmentCustomerIDCol" minWidth="32" text="Customer ID"/>

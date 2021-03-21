@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import scheduler.dao.AppointmentDao;
 import scheduler.dao.CustomerDao;
 import scheduler.dao.DAO;
 import scheduler.model.Appointment;
@@ -16,10 +17,12 @@ import scheduler.util.FXUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
+    private static DAO<Appointment> appointmentDAO;
     private static DAO<Customer> customerDAO;
     @FXML
     private ToggleButton allToggleButton, monthToggleButton, weekToggleButton;
@@ -32,15 +35,22 @@ public class DashboardController implements Initializable {
     @FXML
     private TableColumn<Appointment, Integer> appointmentIDCol, appointmentCustomerIDCol;
     @FXML
-    private TableColumn<Appointment, String> appointmentTitleCol, appointmentDescriptionCol, appointmentLocationCol;
-    //@FXML
-    //private TableColumn<Appointment, Contact>;
+    private TableColumn<Appointment, String> appointmentTitleCol, appointmentDescriptionCol, appointmentLocationCol, appointmentContactCol, appointmentTypeCol;
+    @FXML
+    private TableColumn<Appointment, LocalDateTime> appointmentStartCol, appointmentEndCol;
     @FXML
     private TableView<Customer> customerTableView;
     @FXML
     private TableColumn<Customer, Integer> customerIDCol;
     @FXML
     private TableColumn<Customer, String> customerNameCol, customerAddressCol, customerPhoneNumberCol;
+
+    /**
+     * Refreshes the Appointments TableView.
+     */
+    private void refreshAppointmentTable() {
+        appointmentTableView.setItems(appointmentDAO.listAll());
+    }
 
     /**
      * Refreshes the Customers TableView.
@@ -141,6 +151,19 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         customerDAO = new CustomerDao();
+        appointmentDAO = new AppointmentDao();
+
+        // Associate the appointments tableview columns with the appropriate getters on Appointment
+        appointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        appointmentTitleCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        appointmentDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("Description"));
+        appointmentLocationCol.setCellValueFactory(new PropertyValueFactory<>("Location"));
+        appointmentContactCol.setCellValueFactory(new PropertyValueFactory<>("ContactName"));
+        appointmentTypeCol.setCellValueFactory(new PropertyValueFactory<>("Type"));
+        appointmentStartCol.setCellValueFactory(new PropertyValueFactory<>("Start"));
+        appointmentEndCol.setCellValueFactory(new PropertyValueFactory<>("End"));
+        appointmentCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("CustomerID"));
+        refreshAppointmentTable();
 
         // Associate the customer tableview columns with the appropriate getters on Customer
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("ID"));

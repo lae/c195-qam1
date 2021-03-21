@@ -19,7 +19,7 @@ public class AppointmentDao implements DAO<Appointment> {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         PreparedStatement ps;
         ResultSet rs;
-        String rawSQL = "select * from appointments;";
+        String rawSQL = "select * from appointments as a join contacts as c on a.Contact_ID = c.Contact_ID;";
 
         try {
             Connection c = State.getDBConnection();
@@ -42,7 +42,8 @@ public class AppointmentDao implements DAO<Appointment> {
                                 rs.getString("Last_Updated_By") != null ? rs.getString("Last_Updated_By") : "",
                                 rs.getInt("Customer_ID"),
                                 rs.getInt("User_ID"),
-                                rs.getInt("Contact_ID")
+                                rs.getInt("Contact_ID"),
+                                rs.getString("Contact_Name")
                         )
                 );
             }
@@ -63,7 +64,8 @@ public class AppointmentDao implements DAO<Appointment> {
         Appointment appointmentResult = new Appointment();
         PreparedStatement ps;
         ResultSet rs;
-        String rawSQL = "select * from appointments where Appointment_ID = ?;";
+        String rawSQL = "select * from appointments as a " +
+                "join contacts as c on a.Contact_ID = c.Contact_ID where Appointment_ID = ?;";
 
         try {
             Connection c = State.getDBConnection();
@@ -86,7 +88,8 @@ public class AppointmentDao implements DAO<Appointment> {
                         rs.getString("Last_Updated_By") != null ? rs.getString("Last_Updated_By") : "",
                         rs.getInt("Customer_ID"),
                         rs.getInt("User_ID"),
-                        rs.getInt("Contact_ID")
+                        rs.getInt("Contact_ID"),
+                        rs.getString("Contact_Name")
                 );
             }
         } catch (SQLException e) {
