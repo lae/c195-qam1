@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
+import scheduler.State;
 import scheduler.dao.CountryDao;
 import scheduler.dao.CustomerDao;
 import scheduler.dao.DAO;
@@ -15,7 +16,6 @@ import scheduler.model.Customer;
 import scheduler.model.FirstLevelDivision;
 import scheduler.util.FXUtil;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -50,6 +50,11 @@ public class EditCustomerController implements Initializable {
         customer = new Customer();
     }
 
+    /**
+     * Populates the inputDivision ComboBox with first level divisions associated with the specified country ID.
+     *
+     * @param countryID the country ID to filter divisions by.
+     */
     public void updateFLDs(int countryID) {
         inputDivision.setItems(
                 firstLevelDivisionDAO.listAll().stream()
@@ -80,16 +85,23 @@ public class EditCustomerController implements Initializable {
         inputDivision.getSelectionModel().select(f);
     }
 
+    /**
+     * Saves changes from the form by either creating a new customer or updating one if editing.
+     *
+     * @param actionEvent a user input event.
+     */
     public void onActionSaveCustomer(ActionEvent actionEvent) {
         customer.setName(inputName.getText());
         customer.setAddress(inputAddress.getText());
         customer.setPostalCode(inputPostalCode.getText());
         customer.setPhone(inputPhoneNumber.getText());
         customer.setDivisionID(inputDivision.getSelectionModel().getSelectedItem().getID());
+        customer.setLastUpdatedBy(State.getLoggedInUser().getUsername());
 
         if (customer.getID() > 0) {
             customerDAO.update(customer);
         } else {
+            customer.setCreatedBy(State.getLoggedInUser().getUsername());
             customerDAO.add(customer);
         }
 
