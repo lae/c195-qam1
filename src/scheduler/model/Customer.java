@@ -46,6 +46,15 @@ public class Customer {
     }
 
     /**
+     * ID-based Constructor for a Customer to use for database lookups from foreign keys.
+     *
+     * @param customerID the ID of this customer.
+     */
+    public Customer(int customerID) {
+        this.customerID = customerID;
+    }
+
+    /**
      * @return the customer ID of the Customer
      */
     public int getID() {

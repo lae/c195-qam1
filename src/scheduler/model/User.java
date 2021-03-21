@@ -70,6 +70,15 @@ public class User {
     }
 
     /**
+     * ID-based Constructor for a User to use for database lookups from foreign keys.
+     *
+     * @param userID the ID of this user.
+     */
+    public User(int userID) {
+        this.userID = userID;
+    }
+
+    /**
      * @return the user ID of the User
      */
     public int getID() {

@@ -167,6 +167,7 @@ public class EditCustomerController implements Initializable {
                 return null;
             }
         });
+
         customerDAO = new CustomerDao();
         countryDAO = new CountryDao();
         firstLevelDivisionDAO = new FirstLevelDivisionDao();

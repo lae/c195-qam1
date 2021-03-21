@@ -29,6 +29,15 @@ public class Contact {
     }
 
     /**
+     * ID-based Constructor for a Contact to use for database lookups from foreign keys.
+     *
+     * @param contactID the ID of this contact.
+     */
+    public Contact(int contactID) {
+        this.contactID = contactID;
+    }
+
+    /**
      * @return the contact ID of the Contact.
      */
     public int getID() {

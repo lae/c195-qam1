@@ -53,10 +53,10 @@
                     <VBox.margin>
                         <Insets top="8.0"/>
                     </VBox.margin>
-                    <Button mnemonicParsing="false" onAction="#onActionModifyAppt" text="Update Appointment"/>
-                    <Button mnemonicParsing="false" onAction="#onActionDeleteAppt" text="Delete Appointment"/>
+                    <Button mnemonicParsing="false" onAction="#onActionModifyAppointment" text="Update Appointment"/>
+                    <Button mnemonicParsing="false" onAction="#onActionDeleteAppointment" text="Delete Appointment"/>
                     <Separator HBox.hgrow="ALWAYS"/>
-                    <Button mnemonicParsing="false" onAction="#onActionScheduleAppt" text="Schedule New Appointment"/>
+                    <Button mnemonicParsing="false" onAction="#onActionScheduleAppointment" text="Schedule New Appointment"/>
                 </HBox>
             </VBox>
         </AnchorPane>

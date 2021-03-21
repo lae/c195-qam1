@@ -29,7 +29,7 @@ public class DashboardController implements Initializable {
     private static DAO<Appointment> appointmentDAO;
     private static DAO<Customer> customerDAO;
     @FXML
-    private ToggleButton allToggleButton, monthToggleButton, weekToggleButton;
+    private ToggleButton monthToggleButton, weekToggleButton;
     @FXML
     private Label appointmentMessageLabel, appointmentTablePlaceholder, customerTablePlaceholder;
     @FXML
@@ -64,15 +64,58 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    public void onActionModifyAppt(ActionEvent actionEvent) {
+    public void onActionModifyAppointment(ActionEvent actionEvent) throws IOException {
+        if (appointmentTableView.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "You must select an appointment to modify!");
+            FXUtil.displayAlert(alert);
+            return;
+        }
+        Appointment selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
+        Stage editStage = new Stage();
+        editStage.initModality(Modality.WINDOW_MODAL);
+        editStage.initOwner(FXUtil.getStage(actionEvent));
+        editStage.setTitle("Scheduler::Update Appointment");
+        FXMLLoader loader = FXUtil.loadView(editStage, "EditAppointment.fxml");
+        EditAppointmentController editCtrl = loader.getController();
+        editCtrl.startEdit(selectedAppointment);
+        editStage.showAndWait();
+        refreshAppointmentTable();
     }
 
     @FXML
-    public void onActionDeleteAppt(ActionEvent actionEvent) {
+    public void onActionDeleteAppointment(ActionEvent actionEvent) {
+        if (appointmentTableView.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "You must select an appointment to delete!");
+            FXUtil.displayAlert(alert);
+            return;
+        }
+        Appointment selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete the following appointment?\n\n" +
+                selectedAppointment.getTitle() + " at " + selectedAppointment.getStart());
+        Optional<ButtonType> result = FXUtil.displayAlert(alert);
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            appointmentDAO.delete(selectedAppointment);
+            refreshAppointmentTable();
+        }
     }
 
+    /**
+     * Switches to a New Appointment form.
+     *
+     * @param actionEvent an action a user performs.
+     * @throws IOException an I/O error.
+     */
     @FXML
-    public void onActionScheduleAppt(ActionEvent actionEvent) {
+    public void onActionScheduleAppointment(ActionEvent actionEvent) throws IOException {
+        Stage editStage = new Stage();
+        editStage.initModality(Modality.WINDOW_MODAL);
+        editStage.initOwner(FXUtil.getStage(actionEvent));
+        editStage.setTitle("Scheduler::New Appointment");
+        FXMLLoader loader = FXUtil.loadView(editStage, "EditAppointment.fxml");
+        EditAppointmentController editCtrl = loader.getController();
+        editCtrl.startAdd();
+        editStage.showAndWait();
+        refreshAppointmentTable();
     }
 
     /**
@@ -104,7 +147,7 @@ public class DashboardController implements Initializable {
     @FXML
     public void onActionModifyCustomer(ActionEvent actionEvent) throws IOException {
         if (customerTableView.getSelectionModel().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "You must select a product to modify!");
+            Alert alert = new Alert(Alert.AlertType.WARNING, "You must select a customer to modify!");
             FXUtil.displayAlert(alert);
             return;
         }
@@ -123,7 +166,7 @@ public class DashboardController implements Initializable {
     @FXML
     public void onActionDeleteCustomer(ActionEvent actionEvent) {
         if (customerTableView.getSelectionModel().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "You must select a product to delete!");
+            Alert alert = new Alert(Alert.AlertType.WARNING, "You must select a customer to delete!");
             FXUtil.displayAlert(alert);
             return;
         }

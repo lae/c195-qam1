@@ -105,7 +105,7 @@ public class AppointmentDao implements DAO<Appointment> {
         PreparedStatement ps;
         String rawSQL = "update appointments " +
                 "set Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?," +
-                "Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ?" +
+                "Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? " +
                 "where Appointment_ID = ?;";
         try {
             Connection c = State.getDBConnection();
@@ -118,9 +118,18 @@ public class AppointmentDao implements DAO<Appointment> {
             ps.setTimestamp(6, TimeUtil.localToTS(appointment.getEnd()));
             ps.setTimestamp(7, Timestamp.valueOf(TimeUtil.utcNow()));
             ps.setString(8, appointment.getLastUpdatedBy());
-            ps.setInt(9, appointment.getCustomerID());
-            ps.setInt(10, appointment.getUserID());
-            ps.setInt(11, appointment.getContactID());
+            if (appointment.getCustomerID() > 0)
+                ps.setInt(9, appointment.getCustomerID());
+            else
+                ps.setNull(9, 0);
+            if (appointment.getUserID() > 0)
+                ps.setInt(10, appointment.getUserID());
+            else
+                ps.setNull(10, 0);
+            if (appointment.getContactID() > 0)
+                ps.setInt(11, appointment.getContactID());
+            else
+                ps.setNull(11, 0);
             ps.setInt(12, appointment.getID());
 
             ps.executeUpdate();
@@ -173,9 +182,18 @@ public class AppointmentDao implements DAO<Appointment> {
             ps.setTimestamp(6, TimeUtil.localToTS(appointment.getEnd()));
             ps.setString(7, appointment.getCreatedBy());
             ps.setString(8, appointment.getLastUpdatedBy());
-            ps.setInt(9, appointment.getCustomerID());
-            ps.setInt(10, appointment.getUserID());
-            ps.setInt(11, appointment.getContactID());
+            if (appointment.getCustomerID() > 0)
+                ps.setInt(9, appointment.getCustomerID());
+            else
+                ps.setNull(9, 0);
+            if (appointment.getUserID() > 0)
+                ps.setInt(10, appointment.getUserID());
+            else
+                ps.setNull(10, 0);
+            if (appointment.getContactID() > 0)
+                ps.setInt(11, appointment.getContactID());
+            else
+                ps.setNull(11, 0);
 
             ps.executeUpdate();
         } catch (SQLException e) {
