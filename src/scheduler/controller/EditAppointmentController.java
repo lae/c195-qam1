@@ -59,6 +59,7 @@ public class EditAppointmentController implements Initializable {
     public void startAdd() {
         labelViewTitle.setText("Schedule New Appointment");
         inputId.setText(newIdText);
+        inputUser.getSelectionModel().select(State.getLoggedInUser());
         appointment = new Appointment();
     }
 
