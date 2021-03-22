@@ -1,6 +1,7 @@
 package scheduler.controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -234,12 +235,22 @@ public class DashboardController implements Initializable {
         }
 
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete the following customer?\n\n" + selectedCustomer.getName());
+        String deleteMessage = "Are you sure you want to delete the customer, " + selectedCustomer.getName() + "?";
+        ObservableList<Appointment> appointments = ((AppointmentDao) appointmentDAO).filterByCustomerID(selectedCustomer.getID());
+        if (appointments.size() > 0) {
+            deleteMessage += "\nThis procedure will also remove their " + appointments.size() + " appointment(s).";
+        }
+
+        Alert alert = FXUtil.detailedAlert(Alert.AlertType.CONFIRMATION, "", deleteMessage);
         Optional<ButtonType> result = FXUtil.displayAlert(alert);
         if (result.isPresent() && result.get() == ButtonType.OK) {
+            for (Appointment a : appointments) {
+                appointmentDAO.delete(a);
+            }
             customerDAO.delete(selectedCustomer);
             customerMessageLabel.setText(String.format("Customer %s has been removed.", selectedCustomer.getName()));
             refreshCustomerTable();
+            refreshAppointmentTable();
         }
     }
 
