@@ -16,6 +16,7 @@ import scheduler.State;
 import scheduler.dao.AppointmentDao;
 import scheduler.dao.CustomerDao;
 import scheduler.dao.DAO;
+import scheduler.dao.ReportDao;
 import scheduler.model.Appointment;
 import scheduler.model.Customer;
 import scheduler.util.FXUtil;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 public class DashboardController implements Initializable {
     private static DAO<Appointment> appointmentDAO;
     private static DAO<Customer> customerDAO;
+    private static ReportDao reportDAO;
     @FXML
     private ToggleButton monthToggleButton, weekToggleButton;
     @FXML
@@ -50,6 +52,8 @@ public class DashboardController implements Initializable {
     private TableColumn<Customer, Integer> customerIDCol;
     @FXML
     private TableColumn<Customer, String> customerNameCol, customerAddressCol, customerPhoneNumberCol;
+    @FXML
+    private TextArea reportArea;
 
     /**
      * Refreshes the Appointments TableView.
@@ -277,6 +281,30 @@ public class DashboardController implements Initializable {
     }
 
     /**
+     * Generates a report and displays it to the user.
+     */
+    @FXML
+    public void onActionReport1() {
+        reportArea.setText(reportDAO.getTotalAppointments());
+    }
+
+    /**
+     * Generates a report and displays it to the user.
+     */
+    @FXML
+    public void onActionReport2() {
+        reportArea.setText(reportDAO.getSchedulesByContact());
+    }
+
+    /**
+     * Generates a report and displays it to the user.
+     */
+    @FXML
+    public void onActionReport3() {
+        reportArea.setText(reportDAO.getCustomerCountries());
+    }
+
+    /**
      * Initializes the Dashboard scheduler.controller.
      *
      * @param url            The location used to resolve relative paths for the root object, or null if the location is not known.
@@ -286,6 +314,7 @@ public class DashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         customerDAO = new CustomerDao();
         appointmentDAO = new AppointmentDao();
+        reportDAO = new ReportDao();
 
         // Associate the appointments tableview columns with the appropriate getters on Appointment
         appointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("ID"));

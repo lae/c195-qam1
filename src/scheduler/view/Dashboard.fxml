@@ -20,16 +20,16 @@
                     <Label fx:id="appointmentMessageLabel" alignment="CENTER" textAlignment="CENTER"/>
                     <Region HBox.hgrow="ALWAYS"/>
                     <HBox alignment="CENTER_RIGHT" spacing="8.0">
-                        <ToggleButton fx:id="monthToggleButton" text="Current Month" onAction="#onActionChangeFilter">
+                        <ToggleButton fx:id="monthToggleButton" onAction="#onActionChangeFilter" text="Current Month">
                             <toggleGroup>
                                 <ToggleGroup fx:id="selectAppointmentFilter"/>
                             </toggleGroup>
                         </ToggleButton>
-                        <ToggleButton fx:id="weekToggleButton" text="Current Week"
-                                      toggleGroup="$selectAppointmentFilter" onAction="#onActionChangeFilter"/>
+                        <ToggleButton fx:id="weekToggleButton" onAction="#onActionChangeFilter" text="Current Week"
+                                      toggleGroup="$selectAppointmentFilter"/>
                     </HBox>
                 </HBox>
-                <TableView fx:id="appointmentTableView" VBox.vgrow="ALWAYS" onMouseClicked="#onClickModifyAppointment">
+                <TableView fx:id="appointmentTableView" onMouseClicked="#onClickModifyAppointment" VBox.vgrow="ALWAYS">
                     <placeholder>
                         <Label fx:id="appointmentTablePlaceholder"
                                text="Click Schedule New Appointment to schedule a new appointment."/>
@@ -69,10 +69,9 @@
                 <padding>
                     <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
                 </padding>
-                <TableView fx:id="customerTableView" VBox.vgrow="ALWAYS" onMouseClicked="#onClickModifyCustomer">
+                <TableView fx:id="customerTableView" onMouseClicked="#onClickModifyCustomer" VBox.vgrow="ALWAYS">
                     <placeholder>
-                        <Label fx:id="customerTablePlaceholder"
-                               text="Click Add Customer to add a new customer."/>
+                        <Label fx:id="customerTablePlaceholder" text="Click Add Customer to add a new customer."/>
                     </placeholder>
                     <columns>
                         <TableColumn fx:id="customerIDCol" minWidth="32" text="ID"/>
@@ -98,6 +97,22 @@
         </AnchorPane>
     </Tab>
     <Tab text="Reports">
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+        <AnchorPane minHeight="0.0" minWidth="0.0">
+            <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+                  AnchorPane.topAnchor="0">
+                <padding>
+                    <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                </padding>
+                <HBox alignment="CENTER" spacing="16.0">
+                    <VBox.margin>
+                        <Insets bottom="16.0"/>
+                    </VBox.margin>
+                    <Button mnemonicParsing="false" onAction="#onActionReport1" text="Total Appointments"/>
+                    <Button mnemonicParsing="false" onAction="#onActionReport2" text="Schedule By Contact"/>
+                    <Button mnemonicParsing="false" onAction="#onActionReport3" text="Customer Countries"/>
+                </HBox>
+                <TextArea fx:id="reportArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS"/>
+            </VBox>
+        </AnchorPane>
     </Tab>
 </TabPane>
