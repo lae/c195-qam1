@@ -33,7 +33,7 @@ public class DashboardController implements Initializable {
     @FXML
     private ToggleButton monthToggleButton, weekToggleButton;
     @FXML
-    private Label appointmentMessageLabel, appointmentTablePlaceholder, customerTablePlaceholder;
+    private Label appointmentMessageLabel, customerMessageLabel, appointmentTablePlaceholder, customerTablePlaceholder;
     @FXML
     private TableView<Appointment> appointmentTableView;
     @FXML
@@ -238,6 +238,7 @@ public class DashboardController implements Initializable {
         Optional<ButtonType> result = FXUtil.displayAlert(alert);
         if (result.isPresent() && result.get() == ButtonType.OK) {
             customerDAO.delete(selectedCustomer);
+            customerMessageLabel.setText(String.format("Customer %s has been removed.", selectedCustomer.getName()));
             refreshCustomerTable();
         }
     }

@@ -90,7 +90,8 @@
                     </VBox.margin>
                     <Button mnemonicParsing="false" onAction="#onActionModifyCustomer" text="Modify Customer"/>
                     <Button mnemonicParsing="false" onAction="#onActionDeleteCustomer" text="Delete Customer"/>
-                    <Separator HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="customerMessageLabel" alignment="CENTER" textAlignment="CENTER"/>
+                    <Region HBox.hgrow="ALWAYS"/>
                     <Button mnemonicParsing="false" onAction="#onActionNewCustomer" text="Add Customer"/>
                 </HBox>
             </VBox>
