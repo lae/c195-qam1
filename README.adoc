@@ -27,7 +27,7 @@ LANG=fr_CA.UTF-8 TZ=Antarctica/South_Pole \
 
 ## Developer Information
 
- [cols="1h,1"]
+[cols="1h,1"]
 |===============================================================
 |Author             | Musee Ullah
 |Email              | mullah@wgu.edu
