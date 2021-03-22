@@ -30,6 +30,11 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for the main Dashboard with tabs for appointments, customers and reports.
+ *
+ * @author Musee Ullah
+ */
 public class DashboardController implements Initializable {
     private static DAO<Appointment> appointmentDAO;
     private static DAO<Customer> customerDAO;

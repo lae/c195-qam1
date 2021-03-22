@@ -7,10 +7,15 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import scheduler.util.FXUtil;
 
+/**
+ * The Main class of this application.
+ *
+ * @author Musee Ullah
+ */
 public class Main extends Application {
     /**
      * Main entrypoint into application.
-     * Populates the Inventory with a couple of Parts and Products, then starts the JavaFX application.
+     * Initializes a database connection then starts the JavaFX application.
      *
      * @param args The command line arguments passed to the application.
      */
@@ -22,7 +27,7 @@ public class Main extends Application {
 
     /**
      * The main entry point for this JavaFX application.
-     * This is called after init and sets up the MainScreen View as our entry scene.
+     * This is called after init and brings up a Login window, and then a Dashboard on successful login.
      *
      * @param primaryStage The primary stage for this application, onto which the application scene can be set.
      * @throws Exception Who knows.

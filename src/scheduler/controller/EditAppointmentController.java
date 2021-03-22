@@ -24,6 +24,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for scheduling and modifying Appointments.
+ *
+ * @author Musee Ullah
+ */
 public class EditAppointmentController implements Initializable {
     private static final String newIdText = "Automatically Generated";
     private static DAO<Appointment> appointmentDAO;

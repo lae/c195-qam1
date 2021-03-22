@@ -29,6 +29,11 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for displaying a login form and authenticating users to the application.
+ *
+ * @author Musee Ullah
+ */
 public class LoginController implements Initializable {
     private static DAO<User> userDao;
     private final ResourceBundle rb = ResourceBundle.getBundle("i18n/Login", Locale.getDefault());
