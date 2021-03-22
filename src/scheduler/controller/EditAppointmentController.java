@@ -109,6 +109,21 @@ public class EditAppointmentController implements Initializable {
             end = end.plusDays(1);
         }
 
+        int customerID = inputCustomer.getSelectionModel().getSelectedItem().getID();
+        // Check if specified time conflicts with another of this customer's appointments.
+        Appointment conflict = null;
+        for (Appointment a : ((AppointmentDao) appointmentDAO).filterByCustomerID(customerID)) {
+            if (start.isBefore(a.getEnd()) && end.isAfter(a.getStart()) && appointment.getID() != a.getID()) {
+                conflict = a;
+            }
+        }
+        if (conflict != null) {
+            validationErrors.add(String.format("The specified appointment time, %s, conflicts with \"%s\" at %s.",
+                    start.toLocalDate() + " between " + start.toLocalTime() + "-" + end.toLocalTime(),
+                    conflict.getTitle(),
+                    conflict.getStart().toLocalDate() + " between " + conflict.getStart().toLocalTime() + "-" + conflict.getEnd().toLocalTime()));
+        }
+
         // Inform the user if any validation failed, and return to the edit screen if so.
         if (validationErrors.size() > 0) {
             Alert alert = FXUtil.detailedAlert(Alert.AlertType.ERROR, "One or more fields failed to validate. Please " +
@@ -120,7 +135,7 @@ public class EditAppointmentController implements Initializable {
         appointment.setTitle(inputTitle.getText());
         appointment.setStart(start);
         appointment.setEnd(end);
-        appointment.setCustomerID(inputCustomer.getSelectionModel().getSelectedItem().getID());
+        appointment.setCustomerID(customerID);
         appointment.setUserID(inputUser.getSelectionModel().getSelectedItem().getID());
         appointment.setContactID(inputContact.getSelectionModel().getSelectedItem().getID());
         appointment.setLocation(inputLocation.getText());

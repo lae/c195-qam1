@@ -200,4 +200,47 @@ public class AppointmentDao implements DAO<Appointment> {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Fetches a list of all Appointments for a single customer.
+     *
+     * @param customerID the ID of the customer.
+     * @return an ObservableList populated with Appointments for a single customer.
+     */
+    public ObservableList<Appointment> filterByCustomerID(int customerID) {
+        ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+        PreparedStatement ps;
+        ResultSet rs;
+        String rawSQL = "select * from appointments as a join contacts as c on a.Contact_ID = c.Contact_ID where a.Customer_ID = ?;";
+
+        try {
+            Connection c = State.getDBConnection();
+            ps = c.prepareStatement(rawSQL);
+            ps.setInt(1, customerID);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                allAppointments.add(
+                        new Appointment(
+                                rs.getInt("Appointment_ID"),
+                                rs.getString("Title"),
+                                rs.getString("Description"),
+                                rs.getString("Location"),
+                                rs.getString("Type"),
+                                TimeUtil.tsToLocal(rs.getTimestamp("Start")),
+                                TimeUtil.tsToLocal(rs.getTimestamp("End")),
+                                rs.getString("Created_By") != null ? rs.getString("Created_By") : "",
+                                rs.getString("Last_Updated_By") != null ? rs.getString("Last_Updated_By") : "",
+                                rs.getInt("Customer_ID"),
+                                rs.getInt("User_ID"),
+                                rs.getInt("Contact_ID"),
+                                rs.getString("Contact_Name")
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allAppointments;
+    }
 }
