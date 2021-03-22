@@ -36,6 +36,7 @@ LANG=fr_CA.UTF-8 TZ=Antarctica/South_Pole \
                       Build #IC-203.7717.56
 |JDK Version        | 11.0.10+9
 |JavaFX Version     | 11.0.2
+|===============================================================
 
 ## Additional Report
 
