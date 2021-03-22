@@ -1,5 +1,6 @@
 package scheduler.controller;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,9 +13,11 @@ import scheduler.model.Contact;
 import scheduler.model.Customer;
 import scheduler.model.User;
 import scheduler.util.FXUtil;
+import scheduler.util.TimeUtil;
 
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -66,12 +69,19 @@ public class EditAppointmentController implements Initializable {
         inputLocation.setText(appointment.getLocation());
         inputType.setText(appointment.getType());
         inputDescription.setText(appointment.getDescription());
+
+        // looks up the foreign keys in the appointment and selects the associated Customer/User/Contact
         Customer editCustomer = customerDAO.find(new Customer(appointment.getCustomerID()));
         inputCustomer.getSelectionModel().select(editCustomer);
         User editUser = userDAO.find(new User(appointment.getUserID()));
         inputUser.getSelectionModel().select(editUser);
         Contact editContact = contactDAO.find(new Contact(appointment.getContactID()));
         inputContact.getSelectionModel().select(editContact);
+
+        // breaks up the date value of the start/end time for editing
+        inputDate.setValue(appointment.getStart().toLocalDate());
+        inputStart.getSelectionModel().select(appointment.getStart().toLocalTime());
+        inputEnd.getSelectionModel().select(appointment.getEnd().toLocalTime());
     }
 
     /**
@@ -166,5 +176,8 @@ public class EditAppointmentController implements Initializable {
         inputCustomer.setItems(customerDAO.listAll());
         inputUser.setItems(userDAO.listAll());
         inputContact.setItems(contactDAO.listAll());
+        List<ObservableList<LocalTime>> businessHours = TimeUtil.generateBusinessHours();
+        inputStart.setItems(businessHours.get(0));
+        inputEnd.setItems(businessHours.get(1));
     }
 }
