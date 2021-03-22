@@ -123,11 +123,13 @@ public class DashboardController implements Initializable {
             return;
         }
         Appointment selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete the following appointment?\n\n" +
+        Alert alert = FXUtil.detailedAlert(Alert.AlertType.CONFIRMATION, "", "Are you sure you want to delete the following appointment?\n\n" +
                 selectedAppointment.getTitle() + " at " + selectedAppointment.getStart());
         Optional<ButtonType> result = FXUtil.displayAlert(alert);
         if (result.isPresent() && result.get() == ButtonType.OK) {
             appointmentDAO.delete(selectedAppointment);
+            appointmentMessageLabel.setText(String.format("Appointment #%d of type %s has been deleted.",
+                    selectedAppointment.getID(), selectedAppointment.getType()));
             refreshAppointmentTable();
         }
     }
