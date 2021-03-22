@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import scheduler.State;
 import scheduler.dao.AppointmentDao;
 import scheduler.dao.CustomerDao;
 import scheduler.dao.DAO;
@@ -304,5 +305,24 @@ public class DashboardController implements Initializable {
         customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("Address"));
         customerPhoneNumberCol.setCellValueFactory(new PropertyValueFactory<>("Phone"));
         refreshCustomerTable();
+
+        // Check if there are any appointments with the logged in user in the 15 minutes
+        Appointment upcomingAppointment = null;
+        for (Appointment a : appointmentTableView.getItems()) {
+            LocalDateTime now = LocalDateTime.now();
+            if (a.getUserID() == State.getLoggedInUser().getID()
+                    && a.getStart().isAfter(LocalDateTime.now())
+                    && a.getStart().isBefore(LocalDateTime.now().plusMinutes(15))) {
+                upcomingAppointment = a;
+            }
+        }
+        if (upcomingAppointment != null) {
+            Alert alert = FXUtil.detailedAlert(Alert.AlertType.INFORMATION, "Upcoming Appointment.",
+                    String.format("You have an appointment shortly!\n\nID: %s\nTitle: %s\nTime: %s",
+                            upcomingAppointment.getID(), upcomingAppointment.getTitle(), upcomingAppointment.getStart()));
+            FXUtil.displayAlert(alert);
+        } else {
+            appointmentMessageLabel.setText("You have no upcoming appointments soon.");
+        }
     }
 }
