@@ -1,4 +1,44 @@
+:build-commit: 09b954c3
+
 = C195 - Scheduling Application
 
 This is a JavaFX application developed for the performance assessment for C195
 - Software II at Western Governor's University.
+
+To setup the application for the first time, copy `config.properties.example`
+to `config.properties` and modify it with credentials to access your database.
+Then, load up the application within IntelliJ, update the paths to the JavaFX
+SDK and the MySQL driver under Project Structure (Ctrl+Alt+Shift+S), and then
+run the application by pressing Shift+F10.
+
+If you don't have IntelliJ setup (or want to skip using it), you can also run
+the release JAR from the command line, though you still need a copy of the
+JavaFX SDK. Below is an example of starting up the application on a Linux
+system in French in a different time zone.
+
+[source,bash,subs="attributes"]
+----
+export JFX_PATH=~/.jdks/javafx-sdk-11.0.2
+LANG=fr_CA.UTF-8 TZ=Antarctica/South_Pole \
+    java --module-path $JFX_PATH/lib --add-modules javafx.controls,javafx.fxml \
+    -Djava.library.path=$JFX_PATH/lib \
+    -jar Scheduler-{build-commit}.jar
+----
+
+## Developer Information
+
+ [cols="1h,1"]
+|===============================================================
+|Author             | Musee Ullah
+|Email              | mullah@wgu.edu
+|Submission Date    | 2021.03.22
+|IDE Version        | IntelliJ IDEA 2020.3.3 (Community Edition)
+                      Build #IC-203.7717.56
+|JDK Version        | 11.0.10+9
+|JavaFX Version     | 11.0.2
+
+## Additional Report
+
+The third report included in the application lists/groups customers by country.
+This could be useful when needing to contact customers residing in a certain
+country but not the others.
