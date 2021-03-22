@@ -17,6 +17,7 @@ import scheduler.model.FirstLevelDivision;
 import scheduler.util.FXUtil;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -91,6 +92,20 @@ public class EditCustomerController implements Initializable {
      * @param actionEvent a user input event.
      */
     public void onActionSaveCustomer(ActionEvent actionEvent) {
+        ArrayList<String> validationErrors = new ArrayList<>();
+        if (inputName.getText().isEmpty()) {
+            validationErrors.add("Customer name must not be empty.");
+        }
+        if (inputDivision.getSelectionModel().isEmpty()) {
+            validationErrors.add("Country and State/Province must be selected.");
+        }
+        // Inform the user if any validation failed, and return to the edit screen if so.
+        if (validationErrors.size() > 0) {
+            Alert alert = FXUtil.detailedAlert(Alert.AlertType.ERROR, "One or more fields failed to validate. Please " +
+                    "review the following and make the necessary corrections.", String.join("\n", validationErrors));
+            FXUtil.displayAlert(alert);
+            return;
+        }
         customer.setName(inputName.getText());
         customer.setAddress(inputAddress.getText());
         customer.setPostalCode(inputPostalCode.getText());
