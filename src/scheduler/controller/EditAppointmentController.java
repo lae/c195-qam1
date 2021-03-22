@@ -16,7 +16,9 @@ import scheduler.util.FXUtil;
 import scheduler.util.TimeUtil;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -90,13 +92,40 @@ public class EditAppointmentController implements Initializable {
      * @param actionEvent a user input event.
      */
     public void onActionSaveAppointment(ActionEvent actionEvent) {
+        ArrayList<String> validationErrors = new ArrayList<>();
+
+        // Parse and validate the form data, storing validation errors in an array.
+        if (inputStart.getSelectionModel().getSelectedIndex() > inputEnd.getSelectionModel().getSelectedIndex()) {
+            validationErrors.add("Selected end time must be after the selected start time.");
+        }
+        LocalDateTime start = LocalDateTime.of(inputDate.getValue(), inputStart.getValue());
+        LocalDateTime end = LocalDateTime.of(inputDate.getValue(), inputEnd.getValue());
+        /*
+         * Since the start/end ComboBoxes are sorted in a way that the times are all consecutive from each (there's no
+         * multiple hour gap when scrolling), an end time that technically falls before the start time *may* be selected
+         * if they are in a significantly different timezone, and it should be treated as the next day, locally.
+         */
+        if (inputEnd.getValue().isBefore(inputStart.getValue())) {
+            end = end.plusDays(1);
+        }
+
+        // Inform the user if any validation failed, and return to the edit screen if so.
+        if (validationErrors.size() > 0) {
+            Alert alert = FXUtil.detailedAlert(Alert.AlertType.ERROR, "One or more fields failed to validate. Please " +
+                    "review the following and make the necessary corrections.", String.join("\n", validationErrors));
+            FXUtil.displayAlert(alert);
+            return;
+        }
+
         appointment.setTitle(inputTitle.getText());
-        appointment.setDescription(inputDescription.getText());
-        appointment.setLocation(inputLocation.getText());
-        appointment.setType(inputType.getText());
+        appointment.setStart(start);
+        appointment.setEnd(end);
         appointment.setCustomerID(inputCustomer.getSelectionModel().getSelectedItem().getID());
         appointment.setUserID(inputUser.getSelectionModel().getSelectedItem().getID());
         appointment.setContactID(inputContact.getSelectionModel().getSelectedItem().getID());
+        appointment.setLocation(inputLocation.getText());
+        appointment.setType(inputType.getText());
+        appointment.setDescription(inputDescription.getText());
         appointment.setLastUpdatedBy(State.getLoggedInUser().getUsername());
 
         if (appointment.getID() > 0) {
