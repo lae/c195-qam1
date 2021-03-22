@@ -20,8 +20,11 @@ import scheduler.exceptions.MissingFieldsException;
 import scheduler.model.User;
 import scheduler.util.FXUtil;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -68,6 +71,7 @@ public class LoginController implements Initializable {
                 throw new AuthenticationException("Credentials failed to verify.");
             }
             State.login(userLookup);
+            logAttempt(username, true);
             return true;
         } catch (MissingFieldsException e) {
             loginMessage.setText(rb.getString("login_blank"));
@@ -76,7 +80,22 @@ public class LoginController implements Initializable {
             loginMessage.setText(rb.getString("login_failed"));
             loginMessage.setTextFill(Color.RED);
         }
+        logAttempt(username, false);
         return false;
+    }
+
+    /**
+     * Logs login attempts to a file.
+     *
+     * @param username the name used in the login attempt
+     * @param success  whether or not the attempt was successful
+     */
+    private void logAttempt(String username, boolean success) {
+        try (FileWriter fw = new FileWriter(State.getLoginLogFile(), true)) {
+            fw.write(String.format("%s: login %s for user \"%s\"\n", LocalDateTime.now(), success ? "succeeded" : "failed", username));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

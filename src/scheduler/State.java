@@ -10,11 +10,12 @@ import java.util.Optional;
 
 public class State {
     private static final String configFile = "config.properties";
+    private static final String loginLogFile = "login_activity.txt";
+    // The timezone that business hours follow, used for restricting appointment times
+    private static final ZoneId businessZone = ZoneId.of("America/New_York");
     private static Connection dbConnection = null;
     private static boolean dbConnected, loggedIn;
     private static User loggedInUser;
-    // The timezone that business hours follow, used for restricting appointment times
-    private static final ZoneId businessZone = ZoneId.of("America/New_York");
 
     /**
      * Provides an access handle to the SQL database connection.
@@ -85,5 +86,12 @@ public class State {
      */
     public static ZoneId getBusinessZone() {
         return businessZone;
+    }
+
+    /**
+     * @return the login log file name
+     */
+    public static String getLoginLogFile() {
+        return loginLogFile;
     }
 }
