@@ -19,7 +19,7 @@ public class AppointmentDao implements DAO<Appointment> {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         PreparedStatement ps;
         ResultSet rs;
-        String rawSQL = "select * from appointments as a join contacts as c on a.Contact_ID = c.Contact_ID;";
+        String rawSQL = "select * from appointments as a left join contacts as c on a.Contact_ID = c.Contact_ID;";
 
         try {
             Connection c = State.getDBConnection();
@@ -63,7 +63,7 @@ public class AppointmentDao implements DAO<Appointment> {
         PreparedStatement ps;
         ResultSet rs;
         String rawSQL = "select * from appointments as a " +
-                "join contacts as c on a.Contact_ID = c.Contact_ID where Appointment_ID = ?;";
+                "left join contacts as c on a.Contact_ID = c.Contact_ID where Appointment_ID = ?;";
 
         try {
             Connection c = State.getDBConnection();
@@ -211,7 +211,7 @@ public class AppointmentDao implements DAO<Appointment> {
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         PreparedStatement ps;
         ResultSet rs;
-        String rawSQL = "select * from appointments as a join contacts as c on a.Contact_ID = c.Contact_ID where a.Customer_ID = ?;";
+        String rawSQL = "select * from appointments as a left join contacts as c on a.Contact_ID = c.Contact_ID where a.Customer_ID = ?;";
 
         try {
             Connection c = State.getDBConnection();

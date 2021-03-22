@@ -16,6 +16,7 @@ import scheduler.util.FXUtil;
 import scheduler.util.TimeUtil;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -93,36 +94,62 @@ public class EditAppointmentController implements Initializable {
      */
     public void onActionSaveAppointment(ActionEvent actionEvent) {
         ArrayList<String> validationErrors = new ArrayList<>();
+        Appointment changes = new Appointment(appointment);
 
         // Parse and validate the form data, storing validation errors in an array.
-        if (inputStart.getSelectionModel().getSelectedIndex() > inputEnd.getSelectionModel().getSelectedIndex()) {
+        if (inputDate.getValue() == null || inputStart.getSelectionModel().isEmpty() || inputEnd.getSelectionModel().isEmpty()) {
+            validationErrors.add("A date, start and end time must all be selected.");
+        } else if (inputStart.getSelectionModel().getSelectedIndex() > inputEnd.getSelectionModel().getSelectedIndex()) {
             validationErrors.add("Selected end time must be after the selected start time.");
-        }
-        LocalDateTime start = LocalDateTime.of(inputDate.getValue(), inputStart.getValue());
-        LocalDateTime end = LocalDateTime.of(inputDate.getValue(), inputEnd.getValue());
-        /*
-         * Since the start/end ComboBoxes are sorted in a way that the times are all consecutive from each (there's no
-         * multiple hour gap when scrolling), an end time that technically falls before the start time *may* be selected
-         * if they are in a significantly different timezone, and it should be treated as the next day, locally.
-         */
-        if (inputEnd.getValue().isBefore(inputStart.getValue())) {
-            end = end.plusDays(1);
-        }
-
-        int customerID = inputCustomer.getSelectionModel().getSelectedItem().getID();
-        // Check if specified time conflicts with another of this customer's appointments.
-        Appointment conflict = null;
-        for (Appointment a : ((AppointmentDao) appointmentDAO).filterByCustomerID(customerID)) {
-            if (start.isBefore(a.getEnd()) && end.isAfter(a.getStart()) && appointment.getID() != a.getID()) {
-                conflict = a;
+        } else {
+            changes.setStart(LocalDateTime.of(inputDate.getValue(), inputStart.getValue()));
+            changes.setEnd(LocalDateTime.of(inputDate.getValue(), inputEnd.getValue()));
+            /*
+             * Since the start/end ComboBoxes are sorted in a way that the times are all consecutive from each (there's no
+             * multiple hour gap when scrolling), an end time that technically falls before the start time *may* be selected
+             * if they are in a significantly different timezone, and it should be treated as the next day, locally.
+             */
+            if (inputEnd.getValue().isBefore(inputStart.getValue())) {
+                changes.setEnd(changes.getEnd().plusDays(1));
             }
         }
-        if (conflict != null) {
-            validationErrors.add(String.format("The specified appointment time, %s, conflicts with \"%s\" at %s.",
-                    start.toLocalDate() + " between " + start.toLocalTime() + "-" + end.toLocalTime(),
-                    conflict.getTitle(),
-                    conflict.getStart().toLocalDate() + " between " + conflict.getStart().toLocalTime() + "-" + conflict.getEnd().toLocalTime()));
+
+        if (inputCustomer.getSelectionModel().getSelectedItem() == null) {
+            validationErrors.add("A customer must be selected.");
+        } else if (validationErrors.size() == 0) {
+            // Only continue with this validation if we haven't run into other validation errors.
+            changes.setCustomerID(inputCustomer.getSelectionModel().getSelectedItem().getID());
+            // Check if specified time conflicts with another of this customer's appointments.
+            Appointment conflict = null;
+            for (Appointment a : ((AppointmentDao) appointmentDAO).filterByCustomerID(changes.getCustomerID())) {
+                if (changes.getStart().isBefore(a.getEnd())
+                        && changes.getEnd().isAfter(a.getStart())
+                        && changes.getID() != a.getID()) {
+                    conflict = a;
+                }
+            }
+            if (conflict != null) {
+                validationErrors.add(String.format("The specified appointment time, %s, conflicts with another one of " +
+                                "this customer's appointments, \"%s\", at %s.",
+                        changes.getStart().toLocalDate() + " between " + changes.getStart().toLocalTime()
+                                + "-" + changes.getEnd().toLocalTime(),
+                        conflict.getTitle(),
+                        conflict.getStart().toLocalDate() + " between " + conflict.getStart().toLocalTime()
+                                + "-" + conflict.getEnd().toLocalTime()));
+            }
         }
+
+        changes.setTitle(inputTitle.getText());
+        if (inputUser.getSelectionModel().getSelectedItem() != null) {
+            changes.setUserID(inputUser.getSelectionModel().getSelectedItem().getID());
+        }
+        if (inputContact.getSelectionModel().getSelectedItem() != null) {
+            changes.setContactID(inputContact.getSelectionModel().getSelectedItem().getID());
+        }
+        changes.setLocation(inputLocation.getText());
+        changes.setType(inputType.getText());
+        changes.setDescription(inputDescription.getText());
+        changes.setLastUpdatedBy(State.getLoggedInUser().getUsername());
 
         // Inform the user if any validation failed, and return to the edit screen if so.
         if (validationErrors.size() > 0) {
@@ -132,22 +159,11 @@ public class EditAppointmentController implements Initializable {
             return;
         }
 
-        appointment.setTitle(inputTitle.getText());
-        appointment.setStart(start);
-        appointment.setEnd(end);
-        appointment.setCustomerID(customerID);
-        appointment.setUserID(inputUser.getSelectionModel().getSelectedItem().getID());
-        appointment.setContactID(inputContact.getSelectionModel().getSelectedItem().getID());
-        appointment.setLocation(inputLocation.getText());
-        appointment.setType(inputType.getText());
-        appointment.setDescription(inputDescription.getText());
-        appointment.setLastUpdatedBy(State.getLoggedInUser().getUsername());
-
-        if (appointment.getID() > 0) {
-            appointmentDAO.update(appointment);
+        if (changes.getID() > 0) {
+            appointmentDAO.update(changes);
         } else {
-            appointment.setCreatedBy(State.getLoggedInUser().getUsername());
-            appointmentDAO.add(appointment);
+            changes.setCreatedBy(State.getLoggedInUser().getUsername());
+            appointmentDAO.add(changes);
         }
 
         FXUtil.getStage(actionEvent).close();
@@ -220,6 +236,7 @@ public class EditAppointmentController implements Initializable {
         inputCustomer.setItems(customerDAO.listAll());
         inputUser.setItems(userDAO.listAll());
         inputContact.setItems(contactDAO.listAll());
+        inputDate.setValue(LocalDate.now());
         List<ObservableList<LocalTime>> businessHours = TimeUtil.generateBusinessHours();
         inputStart.setItems(businessHours.get(0));
         inputEnd.setItems(businessHours.get(1));

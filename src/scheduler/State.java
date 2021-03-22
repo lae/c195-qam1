@@ -14,7 +14,7 @@ public class State {
     private static boolean dbConnected, loggedIn;
     private static User loggedInUser;
     // The timezone that business hours follow, used for restricting appointment times
-    private static ZoneId businessZone = ZoneId.of("America/New_York");
+    private static final ZoneId businessZone = ZoneId.of("America/New_York");
 
     /**
      * Provides an access handle to the SQL database connection.

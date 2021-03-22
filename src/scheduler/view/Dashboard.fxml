@@ -56,7 +56,8 @@
                     <Button mnemonicParsing="false" onAction="#onActionModifyAppointment" text="Update Appointment"/>
                     <Button mnemonicParsing="false" onAction="#onActionDeleteAppointment" text="Delete Appointment"/>
                     <Separator HBox.hgrow="ALWAYS"/>
-                    <Button mnemonicParsing="false" onAction="#onActionScheduleAppointment" text="Schedule New Appointment"/>
+                    <Button mnemonicParsing="false" onAction="#onActionScheduleAppointment"
+                            text="Schedule New Appointment"/>
                 </HBox>
             </VBox>
         </AnchorPane>

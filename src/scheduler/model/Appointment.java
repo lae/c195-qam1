@@ -48,6 +48,27 @@ public class Appointment {
     }
 
     /**
+     * Constructor for creating a copy of an Appointment.
+     *
+     * @param src an existing Appointment object.
+     */
+    public Appointment(Appointment src) {
+        this.appointmentID = src.appointmentID;
+        this.title = src.title;
+        this.description = src.description;
+        this.location = src.location;
+        this.type = src.type;
+        this.start = src.start;
+        this.end = src.end;
+        this.createdBy = src.createdBy;
+        this.lastUpdatedBy = src.lastUpdatedBy;
+        this.customerID = src.customerID;
+        this.userID = src.userID;
+        this.contactID = src.contactID;
+        this.contactName = src.contactName;
+    }
+
+    /**
      * a null Appointment.
      */
     public Appointment() {
@@ -220,5 +241,24 @@ public class Appointment {
      */
     public String getContactName() {
         return contactName;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s { ID: %d, title: \"%s\", description: \"%s\", location: \"%s\", type: \"%s\", " +
+                        "start: %s, end: %s, createdBy: %s, lastUpdatedBy: %s, customerID: %d, userID: %d, contactID: %d}",
+                super.toString(),
+                this.appointmentID,
+                this.title,
+                this.description,
+                this.location,
+                this.type,
+                this.start,
+                this.end,
+                this.createdBy,
+                this.lastUpdatedBy,
+                this.customerID,
+                this.userID,
+                this.contactID);
     }
 }

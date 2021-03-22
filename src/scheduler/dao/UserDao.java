@@ -57,7 +57,7 @@ public class UserDao implements DAO<User> {
         PreparedStatement ps;
         ResultSet rs;
         String rawSQL = "select * from users where User_Name = ?;";
-        if(user.getID() > 0) {
+        if (user.getID() > 0) {
             rawSQL = "select * from users where User_ID = ?;";
         }
 
